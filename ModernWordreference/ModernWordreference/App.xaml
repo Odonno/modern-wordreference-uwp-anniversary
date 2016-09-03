@@ -1,0 +1,218 @@
+﻿<Application
+    x:Class="ModernWordreference.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ModernWordreference"
+    xmlns:inf="using:ModernWordreference.Infrastructure"
+    xmlns:templates="using:ModernWordreference.Templates">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- ServiceLocator -->
+            <inf:ViewModelLocator x:Key="ViewModelLocator" />
+
+            <!-- Styles -->
+            <Style x:Name="TranslationResultContainerStyle" TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            </Style>
+
+            <Style x:Key="TransparentButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+                <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
+                <Setter Property="BorderBrush" Value="{ThemeResource SystemControlForegroundTransparentBrush}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+                <Setter Property="FontWeight" Value="Normal"/>
+                <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+                <Setter Property="UseSystemFocusVisuals" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid x:Name="RootGrid" Background="Transparent">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <Storyboard>
+                                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="PointerOver">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightBaseMediumLowBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightTransparentBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightBaseHighBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <PointerDownThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseMediumLowBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledTransparentBrush}"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Templates -->
+            <DataTemplate x:Key="NewTranslationCardTemplate">
+                <Grid Margin="5" Width="100" Height="40">
+                    <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                               Stroke="{ThemeResource CardBorderBrush}" StrokeThickness="2" StrokeDashArray="10 30 15 8 15 30 15 8 5" 
+                               StrokeDashCap="Square" StrokeDashOffset="0" />
+
+                    <TextBlock Text="&#59152;" VerticalAlignment="Center" HorizontalAlignment="Center"
+                               FontSize="20" FontWeight="Bold" FontFamily="Segoe MDL2 Assets" 
+                               AutomationProperties.Name="Add" />
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ExistingTranslationCardTemplate">
+                <Grid Margin="5" Width="100" Height="40" Background="{ThemeResource CardBackgroundBrush}">
+                    <TextBlock Text="{Binding OriginalWord}" FontSize="12" TextAlignment="Center"
+                                VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                Foreground="{ThemeResource CardForegroundBrush}" />
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="TranslationPartTemplate">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" TextWrapping="Wrap">
+                        <Run FontWeight="Bold" Text="{Binding Path=Type}" />
+                        <Run Text="{Binding Path=Word}" />
+                    </TextBlock>
+
+                    <TextBlock Grid.Row="1"
+                               TextWrapping="Wrap" FontStyle="Italic" Text="{Binding Path=Sense}"
+                               Visibility="{Binding Path=Sense}" />
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="TranslationExampleTemplate">
+                <TextBlock TextWrapping="Wrap" FontStyle="Italic" Text="{Binding}" />
+            </DataTemplate>
+
+            <DataTemplate x:Key="TranslationResultItemTemplate">
+                <Grid Padding="0 5 0 15" BorderBrush="{ThemeResource TranslationItemBorderBrush}" BorderThickness="0 0 0 2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0 0 5 0">
+                        <ListView ItemsSource="{Binding Path=From}"
+                                  IsHitTestVisible="False"
+                                  ItemTemplate="{StaticResource TranslationPartTemplate}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0" />
+                                    <Setter Property="VerticalContentAlignment" Value="Top" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+
+                        <ListView ItemsSource="{Binding Path=FromExamples}"
+                                  IsHitTestVisible="False" Margin="-10 0 0 0"
+                                  ItemTemplate="{StaticResource TranslationExampleTemplate}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="5 0 0 0">
+                        <ListView ItemsSource="{Binding Path=To}"
+                                  IsHitTestVisible="False"
+                                  ItemTemplate="{StaticResource TranslationPartTemplate}">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0" />
+                                    <Setter Property="VerticalContentAlignment" Value="Top" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+
+                        <ListView ItemsSource="{Binding Path=ToExamples}"
+                                  IsHitTestVisible="False" Margin="-10 0 0 0"
+                                  ItemTemplate="{StaticResource TranslationExampleTemplate}" />
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="SuggestionItemTemplate">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image Source="{Binding Path=LanguageImagePath}" Width="20" Height="13" Stretch="Fill" />
+                    <TextBlock Margin="5 0 0 0" Text="{Binding Path=Word}" />
+                </StackPanel>
+            </DataTemplate>
+
+            <!-- Template Selectors -->
+            <templates:TranslationCardsTemplateSelector x:Key="TranslationCardsTemplateSelector"
+                                                        NewTranslationCardTemplate="{StaticResource NewTranslationCardTemplate}"
+                                                        ExistingTranslationCardTemplate="{StaticResource ExistingTranslationCardTemplate}" />
+
+            <!-- Theme resources -->
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <!-- Colors -->
+                    <SolidColorBrush x:Key="TranslationItemBorderBrush" Color="White"></SolidColorBrush>
+                    <SolidColorBrush x:Key="CardBorderBrush" Color="White"></SolidColorBrush>
+                    <SolidColorBrush x:Key="CardBackgroundBrush" Color="White"></SolidColorBrush>
+                    <SolidColorBrush x:Key="CardForegroundBrush" Color="Black"></SolidColorBrush>
+                    <SolidColorBrush x:Key="TranslationInfosBackgroundBrush" Color="White"></SolidColorBrush>
+                    <SolidColorBrush x:Key="TranslationInfosForegroundBrush" Color="Black"></SolidColorBrush>
+
+                    <!-- System Colors -->
+                    <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="White" />
+                    <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="White" />
+                </ResourceDictionary>
+
+                <ResourceDictionary x:Key="Light">
+                    <!-- Colors -->
+                    <SolidColorBrush x:Key="TranslationItemBorderBrush" Color="Black"></SolidColorBrush>
+                    <SolidColorBrush x:Key="CardBorderBrush" Color="Black"></SolidColorBrush>
+                    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource SystemBaseMediumHighColor}"></SolidColorBrush>
+                    <SolidColorBrush x:Key="CardForegroundBrush" Color="White"></SolidColorBrush>
+                    <SolidColorBrush x:Key="TranslationInfosBackgroundBrush" Color="{StaticResource SystemBaseMediumHighColor}"></SolidColorBrush>
+                    <SolidColorBrush x:Key="TranslationInfosForegroundBrush" Color="White"></SolidColorBrush>
+
+                    <!-- System Colors -->
+                    <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{StaticResource SystemBaseMediumColor}" />
+                    <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="{StaticResource SystemBaseMediumColor}" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+</Application>

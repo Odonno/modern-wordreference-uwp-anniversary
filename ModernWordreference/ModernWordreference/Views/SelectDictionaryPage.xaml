@@ -1,0 +1,80 @@
+﻿<Page
+    x:Class="ModernWordreference.Views.SelectDictionaryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ModernWordreference.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:userControls="using:ModernWordreference.UserControls"
+    mc:Ignorable="d"
+    DataContext="{Binding SelectDictionary, Source={StaticResource ViewModelLocator}}">
+
+    <Page.Resources>
+        <DataTemplate x:Key="DictionaryItemTemplate">
+            <userControls:DictionaryControl />
+        </DataTemplate>
+
+        <Style x:Key="DictionaryContainerStyle" TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+
+        <CollectionViewSource x:Name="DictionariesSource" IsSourceGrouped="True" Source="{Binding Path=Source, Mode=OneWay}" />
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Large">
+                    <VisualState.Setters>
+                        <Setter Target="PageTitle.FontSize" Value="42" />
+                    </VisualState.Setters>
+
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="500" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <StackPanel Grid.Row="0" Margin="10">
+            <TextBlock x:Uid="/UIResources/ChooseDictionaryTitle" x:Name="PageTitle"
+                       FontSize="28" Text="Choose a dictionary"
+                       Style="{StaticResource HeaderTextBlockStyle}" />
+
+            <TextBox x:Uid="/UIResources/SearchTextBox" x:Name="SearchTextBox"
+                     PlaceholderText="Search for a language"
+                     InputScope="Search"
+                     Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <ListView x:Name="DictionariesList"
+                      ItemsSource="{Binding Source={StaticResource DictionariesSource}}"
+                      ItemTemplate="{StaticResource DictionaryItemTemplate}" 
+                      ItemContainerStyle="{StaticResource DictionaryContainerStyle}"
+                      SelectedItem="{x:Bind ViewModel.SelectedDictionary, Mode=TwoWay}"
+                      SelectionMode="Single">
+                <ListView.GroupStyle>
+                    <GroupStyle HidesIfEmpty="True">
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Key}" />
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
+
+                        <GroupStyle.HeaderContainerStyle>
+                            <Style TargetType="ListViewHeaderItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </GroupStyle.HeaderContainerStyle>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>

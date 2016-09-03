@@ -1,0 +1,155 @@
+﻿<Page
+    x:Class="ModernWordreference.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ModernWordreference"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:userControls="using:ModernWordreference.UserControls"
+    mc:Ignorable="d"
+    DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}">
+
+    <Page.Resources>
+        <CollectionViewSource x:Name="TranslationResultSource" IsSourceGrouped="true" Source="{Binding Path=Source, Mode=OneWay}" />
+    </Page.Resources>
+
+    <Page.TopAppBar>
+        <CommandBar>
+            <AppBarButton x:Uid="/UIResources/HelpButton" 
+                          Icon="Help" Label="About" Click="{x:Bind ViewModel.GoToAboutPage}" />
+
+            <AppBarButton x:Uid="/UIResources/FeedbackButton" x:Name="FeedbackButton" 
+                          Label="Feedback" Click="{x:Bind ViewModel.GoToFeedbackPageAsync}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE939;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+
+            <AppBarButton x:Uid="/UIResources/LoveButton"
+                          Label="Love" Click="{x:Bind ViewModel.GoToLovePage}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE00B;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+    </Page.TopAppBar>
+
+    <Grid>
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Tapped="{x:Bind ViewModel.TapOnPage}">
+            <Grid x:Name="NoPreviousTranslationGrid" Visibility="{x:Bind ViewModel.ShowNoPreviousTranslationGrid, Mode=OneWay}">
+                <StackPanel x:Name="NoTranslationPanel" Margin="20 0"
+                            VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock x:Uid="/UIResources/StartTranslationText" 
+                               TextAlignment="Center"
+                               Style="{StaticResource SubheaderTextBlockStyle}"
+                               Text="Start with a word to translate" />
+
+                    <TextBlock TextAlignment="Center" FontSize="48"
+                               Style="{StaticResource SubheaderTextBlockStyle}"
+                               Text=";)" />
+
+                    <Button Margin="0 40" HorizontalAlignment="Center" Click="{x:Bind ViewModel.StartNewTranslationAsync}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#59152;" VerticalAlignment="Center"
+                                       FontWeight="Bold" FontFamily="Segoe MDL2 Assets" AutomationProperties.Name="Add" />
+                            <TextBlock x:Uid="/UIResources/NewTranslationText" 
+                                       Margin="6 0 0 0" Text="New translation" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid x:Name="WithPreviousTranslationGrid" Visibility="{x:Bind ViewModel.ShowWithPreviousTranslationGrid, Mode=OneWay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- List of all translations -->
+                <Grid x:Name="AllTranslationsGrid" Grid.Row="0" 
+                      Visibility="{x:Bind ViewModel.HasNetwork, Mode=OneWay}">
+                    <ListView x:Name="TranslationsCardsList"
+                              SelectionMode="None"
+                              HorizontalAlignment="Stretch"
+                              Height="50"
+                              ItemsSource="{x:Bind ViewModel.TranslationsCardItems, Mode=OneWay}"
+                              ItemTemplateSelector="{StaticResource TranslationCardsTemplateSelector}"
+                              ItemClick="{x:Bind ViewModel.ClickOnCard}" IsItemClickEnabled="True"
+                              ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.IsVerticalRailEnabled="False"
+                              ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.IsHorizontalRailEnabled="True">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsStackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Margin" Value="0" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </Grid>
+
+                <!-- Translation infos -->
+                <Grid Grid.Row="1" Background="{ThemeResource TranslationInfosBackgroundBrush}">
+                    <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
+                        <TextBlock FontSize="24" Foreground="{ThemeResource TranslationInfosForegroundBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="5 -3 5 0"
+                                   Text="{x:Bind ViewModel.CurrentTranslation.OriginalWord, Mode=OneWay}" />
+
+                        <TextBlock VerticalAlignment="Center"
+                                   Margin="5 0" Foreground="{ThemeResource TranslationInfosForegroundBrush}"
+                                   Text="{x:Bind ViewModel.CurrentTranslation.Pronunciation, Mode=OneWay}" />
+
+                        <Button Visibility="{x:Bind ViewModel.CanPlayAudio, Mode=OneWay}"
+                                VerticalAlignment="Center" Margin="5 0" 
+                                Foreground="{ThemeResource TranslationInfosForegroundBrush}"
+                                FontFamily="Segoe MDL2 Assets" FontSize="24"
+                                Style="{StaticResource TransparentButtonStyle}"
+                                Click="{x:Bind AudioMedia.Play}" Content="&#xE768;" />
+                    </StackPanel>
+                </Grid>
+
+                <!-- Translation results -->
+                <Grid Grid.Row="2">
+                    <ListView SelectionMode="None"
+                              ItemsSource="{Binding Source={StaticResource TranslationResultSource}}"
+                              ItemTemplate="{StaticResource TranslationResultItemTemplate}"
+                              ItemContainerStyle="{StaticResource TranslationResultContainerStyle}">
+                        <ListView.GroupStyle>
+                            <GroupStyle HidesIfEmpty="True">
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Key}" />
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+
+                                <GroupStyle.HeaderContainerStyle>
+                                    <Style TargetType="ListViewHeaderItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    </Style>
+                                </GroupStyle.HeaderContainerStyle>
+                            </GroupStyle>
+                        </ListView.GroupStyle>
+                    </ListView>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <Grid x:Name="SharedGrid">
+            <!-- Audio control -->
+            <MediaElement x:Name="AudioMedia" AutoPlay="False" Height="0" Width="0" 
+                          Source="{x:Bind ViewModel.CurrentAudioSource, Mode=OneWay}" />
+
+            <!-- New translation control -->
+            <userControls:NewTranslationControl x:Name="NewTranslationControl"
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Visibility="{x:Bind ViewModel.ShowNewTranslationControl, Mode=OneWay}" />
+        </Grid>
+    </Grid>
+
+</Page>

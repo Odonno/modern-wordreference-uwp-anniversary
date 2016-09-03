@@ -1,0 +1,92 @@
+﻿<UserControl
+    x:Class="ModernWordreference.UserControls.NewTranslationControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ModernWordreference.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignWidth="400" d:DesignHeight="230"
+    Width="400" Height="230"
+    DataContext="{Binding NewTranslation, Source={StaticResource ViewModelLocator}}">
+
+    <Grid Background="{ThemeResource ContentDialogBackground}"
+          BorderBrush="{ThemeResource ContentDialogBorderBrush}" BorderThickness="1">
+        <Grid Margin="10" Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="NewTranslationHeaderGrid" Grid.Row="0" BorderBrush="Gray" BorderThickness="0 0 0 1">
+                <TextBlock x:Uid="/UIResources/NewTranslationText" 
+                           Text="New translation" Margin="0 -4 0 0" />
+            </Grid>
+
+            <StackPanel Grid.Row="1" VerticalAlignment="Center">
+                <!-- Flags of current dictionary -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Image x:Name="FromImage" Grid.Row="0" Grid.Column="0" 
+                           Source="{x:Bind ViewModel.CurrentDictionary.FromImagePath, Mode=OneWay}"
+                           Stretch="Fill" Width="140" Height="80"
+                           HorizontalAlignment="Right" />
+                    <Image x:Name="ToImage" Grid.Row="0" Grid.Column="1" 
+                           Source="{x:Bind ViewModel.CurrentDictionary.ToImagePath, Mode=OneWay}"
+                           Stretch="Fill" Width="140" Height="80"
+                           HorizontalAlignment="Left" />
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Switch languages -->
+                    <Button Grid.Row="1" Grid.Column="0"
+                            Width="140" HorizontalAlignment="Right"
+                            x:Name="SwitchDictionaryButton"
+                            Click="{x:Bind ViewModel.SwitchDictionary}"
+                            FontFamily="Segoe MDL2 Assets" FontSize="24" Content="&#xE8AB;" />
+
+                    <!-- Select dictionary -->
+                    <Button Grid.Row="1" Grid.Column="1"
+                            Width="140" HorizontalAlignment="Left"
+                            x:Name="SelectDictionaryButton"
+                            Click="{x:Bind ViewModel.GoToSelectDictionaryPage}"
+                            FontFamily="Segoe MDL2 Assets" FontSize="24" Content="&#xE8FD;" />
+                </Grid>
+            </StackPanel>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Input search with suggestions -->
+                <AutoSuggestBox x:Uid="/UIResources/WordTextBox" x:Name="WordTextBox"
+                                Grid.Column="0" Height="34"
+                                PlaceholderText="Type a word to translate"
+                                Text="{x:Bind ViewModel.Word, Mode=TwoWay}"
+                                TextChanged="{x:Bind ViewModel.SearchTextChanged}"
+                                SuggestionChosen="{x:Bind ViewModel.SearchSuggestionChosen}"
+                                QuerySubmitted="{x:Bind ViewModel.SearchQuerySubmitted}"
+                                ItemsSource="{x:Bind ViewModel.Suggestions}"
+                                ItemTemplate="{StaticResource SuggestionItemTemplate}" />
+
+                <!-- Button search -->
+                <Button x:Name="SearchButton" Grid.Column="1" 
+                        Click="{x:Bind ViewModel.ExecuteSearchAsync}"
+                        IsEnabled="{x:Bind ViewModel.CanExecuteSearch, Mode=OneWay}"
+                        Content="&#xE724;" FontFamily="Segoe MDL2 Assets" FontSize="20" Height="34" />
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
