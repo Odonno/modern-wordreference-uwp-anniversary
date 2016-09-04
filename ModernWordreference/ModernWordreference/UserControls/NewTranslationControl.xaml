@@ -6,8 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignWidth="400" d:DesignHeight="230"
-    Width="400" Height="230"
+    d:DesignWidth="400" d:DesignHeight="270"
+    Width="400" Height="270"
     DataContext="{Binding NewTranslation, Source={StaticResource ViewModelLocator}}">
 
     <Grid Background="{ThemeResource ContentDialogBackground}"
@@ -32,14 +32,19 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <Image x:Name="FromImage" Grid.Row="0" Grid.Column="0" 
-                           Source="{x:Bind ViewModel.CurrentDictionary.FromImagePath, Mode=OneWay}"
-                           Stretch="Fill" Width="140" Height="80"
-                           HorizontalAlignment="Right" />
-                    <Image x:Name="ToImage" Grid.Row="0" Grid.Column="1" 
-                           Source="{x:Bind ViewModel.CurrentDictionary.ToImagePath, Mode=OneWay}"
-                           Stretch="Fill" Width="140" Height="80"
-                           HorizontalAlignment="Left" />
+                    <Polygon Points="0,0 150,0 75,100 0,100" Grid.Row="0" Grid.Column="0"
+                             HorizontalAlignment="Right" Margin="0 0 -40 0">
+                        <Polygon.Fill>
+                            <ImageBrush ImageSource="{x:Bind ViewModel.CurrentDictionary.FromImagePath, Mode=OneWay}" />
+                        </Polygon.Fill>
+                    </Polygon>
+
+                    <Polygon Points="75,0 150,0 150,100 0,100" Grid.Row="0" Grid.Column="1"
+                             HorizontalAlignment="Left" Margin="-40 0 0 0">
+                        <Polygon.Fill>
+                            <ImageBrush ImageSource="{x:Bind ViewModel.CurrentDictionary.ToImagePath, Mode=OneWay}" />
+                        </Polygon.Fill>
+                    </Polygon>
                 </Grid>
 
                 <Grid>
@@ -50,14 +55,14 @@
 
                     <!-- Switch languages -->
                     <Button Grid.Row="1" Grid.Column="0"
-                            Width="140" HorizontalAlignment="Right"
+                            Width="110" HorizontalAlignment="Right"
                             x:Name="SwitchDictionaryButton"
                             Click="{x:Bind ViewModel.SwitchDictionary}"
                             FontFamily="Segoe MDL2 Assets" FontSize="24" Content="&#xE8AB;" />
 
                     <!-- Select dictionary -->
                     <Button Grid.Row="1" Grid.Column="1"
-                            Width="140" HorizontalAlignment="Left"
+                            Width="110" HorizontalAlignment="Left"
                             x:Name="SelectDictionaryButton"
                             Click="{x:Bind ViewModel.GoToSelectDictionaryPage}"
                             FontFamily="Segoe MDL2 Assets" FontSize="24" Content="&#xE8FD;" />

@@ -10,7 +10,7 @@
     d:DesignWidth="400">
 
     <StackPanel Padding="10" Orientation="Horizontal">
-        <VisualStateManager.VisualStateGroups>
+        <!--<VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="Large">
                     <VisualState.Setters>
@@ -25,11 +25,18 @@
                     </VisualState.StateTriggers>
                 </VisualState>
             </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+        </VisualStateManager.VisualStateGroups>-->
 
-        <Image x:Name="FromImage" Source="{Binding FromImagePath}" 
-               Stretch="Fill" Width="125" Height="80" />
-        <Image x:Name="ToImage" Source="{Binding ToImagePath}" 
-               Stretch="Fill" Width="125" Height="80" />
+        <Polygon Points="0,0 200,0 100,130 0,130" Margin="0 0 -50 0">
+            <Polygon.Fill>
+                <ImageBrush ImageSource="{Binding FromImagePath}" />
+            </Polygon.Fill>
+        </Polygon>
+
+        <Polygon Points="100,0 200,0 200,130 0,130" Margin="-50 0 0 0">
+            <Polygon.Fill>
+                <ImageBrush ImageSource="{Binding ToImagePath}" />
+            </Polygon.Fill>
+        </Polygon>
     </StackPanel>
 </UserControl>
