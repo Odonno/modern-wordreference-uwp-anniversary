@@ -95,7 +95,12 @@
                 </Grid>
 
                 <!-- Translation infos -->
-                <Grid Grid.Row="1" Background="{ThemeResource TranslationInfosBackgroundBrush}">
+                <Grid x:Name="TranslationInfosGrid" Grid.Row="1">
+                    <Grid x:Name="TranslationInfosSubGrid">
+                        <Rectangle x:Name="TranslationInfosShape" 
+                                   Fill="{ThemeResource TranslationInfosBackgroundBrush}" />
+                    </Grid>
+
                     <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Center">
                         <TextBlock FontSize="24" Foreground="{ThemeResource TranslationInfosForegroundBrush}"
                                    VerticalAlignment="Center"

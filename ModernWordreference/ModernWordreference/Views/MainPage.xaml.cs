@@ -6,15 +6,20 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Numerics;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
@@ -28,6 +33,12 @@ namespace ModernWordreference.Views
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        #region Fields
+
+        private bool _initialized = false;
+
+        #endregion
+
         #region Properties
 
         public MainViewModel ViewModel { get { return (MainViewModel)DataContext; } }
@@ -51,8 +62,19 @@ namespace ModernWordreference.Views
                     Frame.GoBack();
                 }
             };
-            
+
+            // Handle events
             ViewModel.PropertyChanged += OnPropertyChanged;
+            Loaded += (object sender, RoutedEventArgs e) =>
+            {
+                if (!_initialized)
+                {
+                    // Add animations
+                    CreateDropShadowOnTranslationInfosGrid();
+                }
+
+                _initialized = true;
+            };
         }
 
         #endregion
@@ -96,6 +118,48 @@ namespace ModernWordreference.Views
         {
             await ContentGrid.Blur(0f).StartAsync();
             await NewTranslationControl.Fade().StartAsync();
+        }
+
+        private void CreateDropShadowOnTranslationInfosGrid()
+        {
+            var hostVisual = ElementCompositionPreview.GetElementVisual(TranslationInfosSubGrid);
+            var compositor = hostVisual.Compositor;
+
+            // Create a drop shadow
+            var dropShadow = compositor.CreateDropShadow();
+            dropShadow.BlurRadius = 15f;
+            dropShadow.Offset = new Vector3(0f, 2.5f, 0f);
+
+            // Detect theme color change
+            Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(1))
+                .Subscribe(async _ =>
+                {
+                    await CoreApplication.MainView.CoreWindow.Dispatcher
+                        .RunAsync(CoreDispatcherPriority.High, () =>
+                        {
+                            var dropShadowThemeBrush = Application.Current.Resources["TranslationInfosDropShadowColorBrush"] as SolidColorBrush;
+                            if (dropShadow.Color != dropShadowThemeBrush.Color)
+                            {
+                                dropShadow.Color = dropShadowThemeBrush.Color;
+                            }
+                        });
+                });
+
+            // Associate the shape of the shadow with the shape of the target element
+            dropShadow.Mask = TranslationInfosShape.GetAlphaMask();
+
+            // Create a Visual to hold the shadow
+            var shadowVisual = compositor.CreateSpriteVisual();
+            shadowVisual.Shadow = dropShadow;
+
+            // Add the shadow as a child of the host in the visual tree
+            ElementCompositionPreview.SetElementChildVisual(TranslationInfosSubGrid, shadowVisual);
+
+            // Make sure size of shadow host and shadow visual always stay in sync
+            var bindSizeAnimation = compositor.CreateExpressionAnimation("hostVisual.Size");
+            bindSizeAnimation.SetReferenceParameter("hostVisual", hostVisual);
+
+            shadowVisual.StartAnimation("Size", bindSizeAnimation);
         }
 
         #endregion
