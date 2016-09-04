@@ -125,7 +125,7 @@ namespace ModernWordreference.ViewModels
                 .Concat(recommendGroupList)
                 .Concat(defaultGroupList);
 
-            RaisePropertyChanged("Source");
+            RaisePropertyChanged(nameof(Source));
 
             // Retrieve currently selected dictionary
             var savedDictionary = _storageService.Retrieve<Models.Dictionary>(StorageConstants.CurrentDictionary);

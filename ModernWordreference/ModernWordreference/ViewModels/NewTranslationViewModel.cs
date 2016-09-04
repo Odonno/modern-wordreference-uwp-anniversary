@@ -41,6 +41,19 @@ namespace ModernWordreference.ViewModels
             }
         }
 
+        public bool NeedSpecificKeyboard
+        {
+            get
+            {
+                return (CurrentDictionary.From == "ru" ||
+                    CurrentDictionary.From == "gr" ||
+                    CurrentDictionary.From == "zh" ||
+                    CurrentDictionary.From == "ja" ||
+                    CurrentDictionary.From == "ko" ||
+                    CurrentDictionary.From == "ar");
+            }
+        }
+
         private Models.TranslationResult _lastTranslation;
         public Models.TranslationResult LastTranslation
         {
@@ -58,7 +71,7 @@ namespace ModernWordreference.ViewModels
             set
             {
                 _word = value; RaisePropertyChanged();
-                RaisePropertyChanged("CanExecuteSearch");
+                RaisePropertyChanged(nameof(CanExecuteSearch));
             }
         }
 
@@ -113,7 +126,7 @@ namespace ModernWordreference.ViewModels
         public void SwitchDictionary()
         {
             CurrentDictionary = _dictionaryService.Get(CurrentDictionary.To, CurrentDictionary.From);
-            RaisePropertyChanged("CurrentDictionary");
+            RaisePropertyChanged(nameof(CurrentDictionary));
 
             // Send telemetry
             _analyticsService.TrackEvent("SwitchDictionary", new Dictionary<string, string> {

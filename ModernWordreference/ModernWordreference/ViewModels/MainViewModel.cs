@@ -38,17 +38,6 @@ namespace ModernWordreference.ViewModels
 
         #region Properties
 
-        private Models.Dictionary _currentDictionary;
-        public Models.Dictionary CurrentDictionary
-        {
-            get { return _currentDictionary; }
-            set
-            {
-                _currentDictionary = value; RaisePropertyChanged();
-                RaisePropertyChanged("NeedSpecificKeyboard");
-            }
-        }
-
         private Models.TranslationResult _currentTranslation;
         public Models.TranslationResult CurrentTranslation
         {
@@ -56,8 +45,8 @@ namespace ModernWordreference.ViewModels
             set
             {
                 _currentTranslation = value; RaisePropertyChanged();
-                RaisePropertyChanged("CanPlayAudio");
-                RaisePropertyChanged("CurrentAudioSource");
+                RaisePropertyChanged(nameof(CanPlayAudio));
+                RaisePropertyChanged(nameof(CurrentAudioSource));
             }
         }
 
@@ -66,19 +55,6 @@ namespace ModernWordreference.ViewModels
         public ObservableCollection<object> TranslationsCardItems { get; private set; } = new ObservableCollection<object>();
 
         public IEnumerable<IGrouping<string, Models.TranslationLine>> Source { get; private set; }
-
-        public bool NeedSpecificKeyboard
-        {
-            get
-            {
-                return (CurrentDictionary.From == "ru" ||
-                    CurrentDictionary.From == "gr" ||
-                    CurrentDictionary.From == "zh" ||
-                    CurrentDictionary.From == "ja" ||
-                    CurrentDictionary.From == "ko" ||
-                    CurrentDictionary.From == "ar");
-            }
-        }
 
         public bool CanPlayAudio { get { return CurrentTranslation?.AudioSources.Count > 0; } }
 
@@ -151,14 +127,6 @@ namespace ModernWordreference.ViewModels
                     });
             };
 
-            // Retrieve current dictionary
-            CurrentDictionary = _storageService.Retrieve<Models.Dictionary>(StorageConstants.CurrentDictionary);
-            if (CurrentDictionary == null)
-            {
-                CurrentDictionary = _dictionaryService.Get("en", "fr");
-                _storageService.Save(StorageConstants.CurrentDictionary, CurrentDictionary);
-            }
-
             // Create TranslationsCardItems list
             TranslationsCardItems.Add("New Translation");
 
@@ -199,9 +167,9 @@ namespace ModernWordreference.ViewModels
                 .Concat(additionalTranslationsGroup)
                 .Concat(compoundFormsTranslationsGroup);
 
-            RaisePropertyChanged("ShowNoPreviousTranslationGrid");
-            RaisePropertyChanged("ShowWithPreviousTranslationGrid");
-            RaisePropertyChanged("Source");
+            RaisePropertyChanged(nameof(ShowNoPreviousTranslationGrid));
+            RaisePropertyChanged(nameof(ShowWithPreviousTranslationGrid));
+            RaisePropertyChanged(nameof(Source));
         }
 
         private void LoadExistingTranslation(Models.TranslationResult translation)
@@ -290,7 +258,7 @@ namespace ModernWordreference.ViewModels
             _clickOnCard = true;
 
             ShowNewTranslationControl = true;
-            RaisePropertyChanged("ShowNewTranslationControl");
+            RaisePropertyChanged(nameof(ShowNewTranslationControl));
 
             await Task.Delay(50);
             _clickOnCard = false;
