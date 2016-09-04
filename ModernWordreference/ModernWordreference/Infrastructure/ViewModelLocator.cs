@@ -36,7 +36,7 @@ namespace ModernWordreference.Infrastructure
 
             if (!SimpleIoc.Default.IsRegistered<IApiService>())
             {
-                SimpleIoc.Default.Register<IApiService, NativeApiService>();
+                SimpleIoc.Default.Register<IApiService, ApiService>();
             }
 
             if (!SimpleIoc.Default.IsRegistered<IDictionaryService>())

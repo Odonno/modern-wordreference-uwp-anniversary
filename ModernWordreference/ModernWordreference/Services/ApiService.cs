@@ -14,9 +14,10 @@ namespace ModernWordreference.Services
     {
         Task<IEnumerable<Models.Suggestion>> RetrieveSuggestionsAsync(string word, Models.Dictionary dictionary);
         Task<Models.TranslationResult> ExecuteSearchAsync(string word, Models.Dictionary dictionary);
+        Task<Models.TranslationResult> ExecutePageSearchAsync(string word, Models.Dictionary dictionary, int start = 0);
     }
 
-    public class NativeApiService : IApiService
+    public class ApiService : IApiService
     {
         public async Task<IEnumerable<Models.Suggestion>> RetrieveSuggestionsAsync(string word, Models.Dictionary dictionary)
         {
@@ -69,13 +70,47 @@ namespace ModernWordreference.Services
 
         public async Task<Models.TranslationResult> ExecuteSearchAsync(string word, Models.Dictionary dictionary)
         {
+            int start = 0;
+            Models.TranslationResult result = await ExecutePageSearchAsync(word, dictionary, start);
+            Models.TranslationResult temporaryResult = null;
+
+            do
+            {
+                start += 100;
+                temporaryResult = await ExecutePageSearchAsync(word, dictionary, start);
+
+                if (temporaryResult == null)
+                    break;
+
+                if (temporaryResult.PrimaryTranslations.Any())
+                    result.PrimaryTranslations.AddRange(temporaryResult.PrimaryTranslations);
+
+                if (temporaryResult.AdditionalTranslations.Any())
+                    result.AdditionalTranslations.AddRange(temporaryResult.AdditionalTranslations);
+
+                if (temporaryResult.CompoundForms.Any())
+                    result.CompoundForms.AddRange(temporaryResult.CompoundForms);
+
+            } while (temporaryResult.CompoundForms.Any() || temporaryResult.AdditionalTranslations.Any() || temporaryResult.PrimaryTranslations.Any());
+
+            return result;
+        }
+
+        public async Task<Models.TranslationResult> ExecutePageSearchAsync(string word, Models.Dictionary dictionary, int start = 0)
+        {
             using (var httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Add("Accept-Language", "fr-FR, fr; q=0.8, en-US; q=0.5, en; q=0.3");
                 httpClient.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
                 httpClient.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586");
 
-                var response = await httpClient.GetAsync($"http://www.wordreference.com/{dictionary.Value}/{word}");
+                string url = $"http://www.wordreference.com/{dictionary.Value}/{word}";
+                if (start > 0)
+                {
+                    url += $"?start={start}";
+                }
+
+                var response = await httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
