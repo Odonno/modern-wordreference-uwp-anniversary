@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:userControls="using:ModernWordreference.UserControls"
     mc:Ignorable="d"
-    DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}">
+    DataContext="{Binding Main, Source={StaticResource ViewModelLocator}}"
+    NavigationCacheMode="Required">
 
     <Page.Resources>
         <CollectionViewSource x:Name="TranslationResultSource" IsSourceGrouped="true" Source="{Binding Path=Source, Mode=OneWay}" />
@@ -35,7 +36,7 @@
     </Page.TopAppBar>
 
     <Grid>
-        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Tapped="{x:Bind ViewModel.TapOnPage}">
+        <Grid x:Name="ContentGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Tapped="{x:Bind ViewModel.TapOnPage}">
             <Grid x:Name="NoPreviousTranslationGrid" Visibility="{x:Bind ViewModel.ShowNoPreviousTranslationGrid, Mode=OneWay}">
                 <StackPanel x:Name="NoTranslationPanel" Margin="20 0"
                             VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -148,6 +149,7 @@
             <!-- New translation control -->
             <userControls:NewTranslationControl x:Name="NewTranslationControl"
                                                 HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Opacity="0"
                                                 Visibility="{x:Bind ViewModel.ShowNewTranslationControl, Mode=OneWay}" />
         </Grid>
     </Grid>

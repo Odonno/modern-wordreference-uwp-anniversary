@@ -1,10 +1,13 @@
-﻿using ModernWordreference.Infrastructure;
+﻿using Microsoft.Toolkit.Uwp.UI.Animations;
+using ModernWordreference.Infrastructure;
 using ModernWordreference.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
@@ -48,6 +51,51 @@ namespace ModernWordreference.Views
                     Frame.GoBack();
                 }
             };
+            
+            ViewModel.PropertyChanged += OnPropertyChanged;
+        }
+
+        #endregion
+
+        #region Events
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            var systemNavigationManager = SystemNavigationManager.GetForCurrentView();
+            systemNavigationManager.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+
+            base.OnNavigatedTo(e);
+        }
+
+        private async void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModel.ShowNewTranslationControl))
+            {
+                if (ViewModel.ShowNewTranslationControl)
+                {
+                    await ShowNewTranslationControlAsync();
+                }
+                else
+                {
+                    await HideNewTranslationControlAsync();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Animation
+
+        private async Task ShowNewTranslationControlAsync()
+        {
+            await ContentGrid.Blur(10f).StartAsync();
+            await NewTranslationControl.Fade(1).StartAsync();
+        }
+
+        private async Task HideNewTranslationControlAsync()
+        {
+            await ContentGrid.Blur(0f).StartAsync();
+            await NewTranslationControl.Fade().StartAsync();
         }
 
         #endregion
