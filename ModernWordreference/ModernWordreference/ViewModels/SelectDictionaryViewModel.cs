@@ -96,6 +96,8 @@ namespace ModernWordreference.ViewModels
 
         private void UpdateUI()
         {
+            _initializing = true;
+
             Func<Models.Dictionary, string, bool> dictionaryContainsFromLanguage =
                 (Models.Dictionary d, string s) => d.FromLanguage.ToLower().Contains(s.ToLower());
 
@@ -137,11 +139,18 @@ namespace ModernWordreference.ViewModels
             {
                 SelectedDictionary = _dictionaryService.Get("en", "fr");
             }
+
+            RaisePropertyChanged(nameof(SelectedDictionary));
+
+            _initializing = false;
         }
 
         private void SelectDictionary()
         {
             if (_initializing)
+                return;
+
+            if (SelectedDictionary == null)
                 return;
 
             var savedDictionary = _storageService.Retrieve<Models.Dictionary>(StorageConstants.CurrentDictionary);
