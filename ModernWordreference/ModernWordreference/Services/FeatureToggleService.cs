@@ -14,6 +14,7 @@ namespace ModernWordreference.Services
         bool UseFeedbackHubApp();
         bool IsRunningWindowsMobile();
         bool UseColorTitleBar();
+        bool LoadAllTranslations();
     }
 
     public class FeatureToggleService : IFeatureToggleService
@@ -36,6 +37,11 @@ namespace ModernWordreference.Services
         }
 
         public bool UseColorTitleBar()
+        {
+            return false;
+        }
+
+        public bool LoadAllTranslations()
         {
             return false;
         }

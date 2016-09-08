@@ -19,6 +19,23 @@ namespace ModernWordreference.Services
 
     public class ApiService : IApiService
     {
+        #region Fields
+
+        private IFeatureToggleService _featureToggleService;
+
+        #endregion
+
+        #region Constructor
+
+        public ApiService(IFeatureToggleService featureToggleService)
+        {
+            _featureToggleService = featureToggleService;
+        }
+
+        #endregion
+
+        #region Methods
+
         public async Task<IEnumerable<Models.Suggestion>> RetrieveSuggestionsAsync(string word, Models.Dictionary dictionary)
         {
             using (var httpClient = new HttpClient())
@@ -73,6 +90,7 @@ namespace ModernWordreference.Services
             int start = 0;
             Models.TranslationResult result = await ExecutePageSearchAsync(word, dictionary, start);
             Models.TranslationResult temporaryResult = null;
+            bool loadAllTranslations = _featureToggleService.LoadAllTranslations();
 
             do
             {
@@ -90,6 +108,9 @@ namespace ModernWordreference.Services
 
                 if (temporaryResult.CompoundForms.Any())
                     result.CompoundForms.AddRange(temporaryResult.CompoundForms);
+
+                if (!loadAllTranslations)
+                    break;
 
             } while (temporaryResult.CompoundForms.Any() || temporaryResult.AdditionalTranslations.Any() || temporaryResult.PrimaryTranslations.Any());
 
@@ -366,5 +387,7 @@ namespace ModernWordreference.Services
                 return null;
             }
         }
+
+        #endregion
     }
 }
