@@ -240,6 +240,11 @@ namespace ModernWordreference.ViewModels
             _navigationService.NavigateTo("Love");
         }
 
+        public void GoToSettingsPage()
+        {
+            _navigationService.NavigateTo("Settings");
+        }
+
         public async void ClickOnCard(object sender, ItemClickEventArgs e)
         {
             var translation = e.ClickedItem as Models.TranslationResult;

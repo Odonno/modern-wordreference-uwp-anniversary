@@ -171,6 +171,9 @@
   <data name="SearchTextBox.PlaceholderText" xml:space="preserve">
     <value>Cerca una lingua</value>
   </data>
+  <data name="SettingsButton.Label" xml:space="preserve">
+    <value>Opziones</value>
+  </data>
   <data name="StartTranslationText.Text" xml:space="preserve">
     <value>Inizia con la parola da tradurre</value>
   </data>

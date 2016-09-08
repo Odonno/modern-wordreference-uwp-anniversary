@@ -150,6 +150,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NewTranslationViewModel.cs" />
     <Compile Include="ViewModels\SelectDictionaryViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Views\AboutPage.xaml.cs">
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
@@ -162,6 +163,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\SelectDictionaryPage.xaml.cs">
       <DependentUpon>SelectDictionaryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +229,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\SelectDictionaryPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

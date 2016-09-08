@@ -77,6 +77,7 @@ namespace ModernWordreference.Infrastructure
             SimpleIoc.Default.Register<LoveViewModel>();
             SimpleIoc.Default.Register<NewTranslationViewModel>();
             SimpleIoc.Default.Register<SelectDictionaryViewModel>();
+            SimpleIoc.Default.Register<SettingsViewModel>();
         }
 
         #endregion
@@ -91,6 +92,7 @@ namespace ModernWordreference.Infrastructure
             navigationService.Configure("About", typeof(AboutPage));
             navigationService.Configure("Love", typeof(LovePage));
             navigationService.Configure("SelectDictionary", typeof(SelectDictionaryPage));
+            navigationService.Configure("Settings", typeof(SettingsPage));
 
             return navigationService;
         }
@@ -122,6 +124,11 @@ namespace ModernWordreference.Infrastructure
         public static SelectDictionaryViewModel SelectDictionary
         {
             get { return ServiceLocator.Current.GetInstance<SelectDictionaryViewModel>(); }
+        }
+
+        public static SettingsViewModel Settings
+        {
+            get { return ServiceLocator.Current.GetInstance<SettingsViewModel>(); }
         }
 
         #endregion

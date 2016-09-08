@@ -16,8 +16,8 @@
 
     <Page.TopAppBar>
         <CommandBar>
-            <AppBarButton x:Uid="/UIResources/HelpButton" 
-                          Icon="Help" Label="About" Click="{x:Bind ViewModel.GoToAboutPage}" />
+            <AppBarButton x:Uid="/UIResources/HelpButton" Icon="Help"
+                          Label="About" Click="{x:Bind ViewModel.GoToAboutPage}" />
 
             <AppBarButton x:Uid="/UIResources/FeedbackButton" x:Name="FeedbackButton" 
                           Label="Feedback" Click="{x:Bind ViewModel.GoToFeedbackPageAsync}">
@@ -32,6 +32,9 @@
                     <FontIcon Glyph="&#xE00B;" />
                 </AppBarButton.Icon>
             </AppBarButton>
+
+            <AppBarButton x:Uid="/UIResources/SettingsButton" Icon="Setting" Visibility="Collapsed"
+                          Label="Settings" Click="{x:Bind ViewModel.GoToSettingsPage}"></AppBarButton>
         </CommandBar>
     </Page.TopAppBar>
 
