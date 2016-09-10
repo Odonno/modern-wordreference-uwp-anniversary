@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using ModernWordreference.Constants;
+using ModernWordreference.Messages;
 using ModernWordreference.Services;
 using System;
 using System.Collections.Generic;
@@ -25,7 +27,6 @@ namespace ModernWordreference.ViewModels
         private IRoamingStorageService _storageService;
         private INavigationService _navigationService;
         private IAnalyticsService _analyticsService;
-        private IReactiveService _reactiveService;
 
         #endregion
 
@@ -55,13 +56,12 @@ namespace ModernWordreference.ViewModels
 
         #region Constructor
 
-        public SelectDictionaryViewModel(IDictionaryService dictionaryService, IRoamingStorageService storageService, INavigationService navigationService, IAnalyticsService analyticsService, IReactiveService reactiveService)
+        public SelectDictionaryViewModel(IDictionaryService dictionaryService, IRoamingStorageService storageService, INavigationService navigationService, IAnalyticsService analyticsService)
         {
             _dictionaryService = dictionaryService;
             _storageService = storageService;
             _navigationService = navigationService;
             _analyticsService = analyticsService;
-            _reactiveService = reactiveService;
 
             Initialize();
         }
@@ -169,7 +169,10 @@ namespace ModernWordreference.ViewModels
                 });
 
                 // Send result to other ViewModels
-                _reactiveService.SelectDictionaryDone.OnNext(SelectedDictionary);
+                Messenger.Default.Send<SelectDictionaryMessage>(new SelectDictionaryMessage
+                {
+                    Dictionary = SelectedDictionary
+                });
 
                 // Go back
                 _navigationService.GoBack();

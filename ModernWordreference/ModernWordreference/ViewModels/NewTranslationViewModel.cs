@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using ModernWordreference.Constants;
+using ModernWordreference.Messages;
 using ModernWordreference.Services;
 using System;
 using System.Collections.Generic;
@@ -25,7 +27,6 @@ namespace ModernWordreference.ViewModels
         private IRoamingStorageService _storageService;
         private IToastNotificationService _toastNotificationService;
         private IAnalyticsService _analyticsService;
-        private IReactiveService _reactiveService;
 
         #endregion
 
@@ -83,7 +84,7 @@ namespace ModernWordreference.ViewModels
 
         #region Constructor
 
-        public NewTranslationViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, IRoamingStorageService storageService, IToastNotificationService toastNotificationService, IAnalyticsService analyticsService, IReactiveService reactiveService)
+        public NewTranslationViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, IRoamingStorageService storageService, IToastNotificationService toastNotificationService, IAnalyticsService analyticsService)
         {
             _navigationService = navigationService;
             _apiService = apiService;
@@ -91,13 +92,12 @@ namespace ModernWordreference.ViewModels
             _storageService = storageService;
             _toastNotificationService = toastNotificationService;
             _analyticsService = analyticsService;
-            _reactiveService = reactiveService;
 
             InitializeAsync();
 
-            _reactiveService.SelectDictionaryDone.Subscribe((dictionary) =>
+            Messenger.Default.Register<SelectDictionaryMessage>(this, (message) =>
             {
-                CurrentDictionary = dictionary;
+                CurrentDictionary = message.Dictionary;
             });
         }
 
@@ -239,7 +239,10 @@ namespace ModernWordreference.ViewModels
             await _storageService.SaveFileAsync(StorageConstants.LastTranslation, LastTranslation);
 
             // Send result to other ViewModels
-            _reactiveService.NewTranslationDone.OnNext(searchResult);
+            Messenger.Default.Send<NewTranslationMessage>(new NewTranslationMessage
+            {
+                Translation = searchResult
+            });
 
             // Send telemetry
             var properties = new Dictionary<string, string> {

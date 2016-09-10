@@ -56,11 +56,6 @@ namespace ModernWordreference.Infrastructure
                 SimpleIoc.Default.Register<INetworkService, NetworkService>();
             }
 
-            if (!SimpleIoc.Default.IsRegistered<IReactiveService>())
-            {
-                SimpleIoc.Default.Register<IReactiveService, ReactiveService>();
-            }
-
             if (!SimpleIoc.Default.IsRegistered<IRoamingStorageService>())
             {
                 SimpleIoc.Default.Register<IRoamingStorageService, RoamingStorageService>();

@@ -1,4 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
+using ModernWordreference.Messages;
 using ModernWordreference.Services;
 using ModernWordreference.ViewModels;
 using System;
@@ -36,7 +38,7 @@ namespace ModernWordreference.UserControls
 
             Loaded += NewTranslationControl_Loaded;
 
-            SimpleIoc.Default.GetInstance<IReactiveService>().ShowNewTranslationControlDone.Subscribe(_ =>
+            Messenger.Default.Register<ShowNewTranslationControlMessage>(this, _ =>
             {
                 WordTextBox.Focus(FocusState.Programmatic);
             });

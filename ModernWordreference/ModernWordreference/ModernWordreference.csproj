@@ -32,6 +32,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -125,6 +126,9 @@
     <Compile Include="Constants\StorageConstants.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
+    <Compile Include="Messages\NewTranslationMessage.cs" />
+    <Compile Include="Messages\SelectDictionaryMessage.cs" />
+    <Compile Include="Messages\ShowNewTranslationControlMessage.cs" />
     <Compile Include="Models\Dictionary.cs" />
     <Compile Include="Models\IapBuyed.cs" />
     <Compile Include="Models\Suggestion.cs" />
@@ -135,7 +139,6 @@
     <Compile Include="Services\DictionaryService.cs" />
     <Compile Include="Services\FeatureToggleService.cs" />
     <Compile Include="Services\NetworkService.cs" />
-    <Compile Include="Services\ReactiveService.cs" />
     <Compile Include="Services\RoamingStorageService.cs" />
     <Compile Include="Services\ToastNotificationService.cs" />
     <Compile Include="Templates\TranslationCardsTemplateSelector.cs" />

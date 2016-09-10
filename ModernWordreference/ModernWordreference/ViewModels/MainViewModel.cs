@@ -1,13 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using Microsoft.Services.Store.Engagement;
 using ModernWordreference.Constants;
+using ModernWordreference.Messages;
 using ModernWordreference.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -32,7 +33,6 @@ namespace ModernWordreference.ViewModels
         private IRoamingStorageService _storageService;
         private IAnalyticsService _analyticsService;
         private INetworkService _networkService;
-        private IReactiveService _reactiveService;
 
         #endregion
 
@@ -95,7 +95,7 @@ namespace ModernWordreference.ViewModels
 
         #region Constructor
 
-        public MainViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, IRoamingStorageService storageService, IAnalyticsService analyticsService, INetworkService networkService, IReactiveService reactiveService)
+        public MainViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, IRoamingStorageService storageService, IAnalyticsService analyticsService, INetworkService networkService)
         {
             _navigationService = navigationService;
             _apiService = apiService;
@@ -103,11 +103,13 @@ namespace ModernWordreference.ViewModels
             _storageService = storageService;
             _analyticsService = analyticsService;
             _networkService = networkService;
-            _reactiveService = reactiveService;
 
             InitializeAsync();
 
-            _reactiveService.NewTranslationDone.Subscribe(async (translation) => await AddTranslationAsync(translation));
+            Messenger.Default.Register<NewTranslationMessage>(this, async (message) =>
+            {
+                await AddTranslationAsync(message.Translation);
+            });
         }
 
         #endregion
@@ -267,7 +269,7 @@ namespace ModernWordreference.ViewModels
 
             await Task.Delay(50);
             _clickOnCard = false;
-            _reactiveService.ShowNewTranslationControlDone.OnNext(Unit.Default);
+            Messenger.Default.Send<ShowNewTranslationControlMessage>(new ShowNewTranslationControlMessage());
         }
 
         public void TapOnPage()

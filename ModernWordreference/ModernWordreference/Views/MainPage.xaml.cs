@@ -7,7 +7,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Reactive.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
@@ -131,19 +130,21 @@ namespace ModernWordreference.Views
             dropShadow.Offset = new Vector3(0f, 2.5f, 0f);
 
             // Detect theme color change
-            Observable.Timer(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(1))
-                .Subscribe(async _ =>
-                {
-                    await CoreApplication.MainView.CoreWindow.Dispatcher
-                        .RunAsync(CoreDispatcherPriority.High, () =>
-                        {
-                            var dropShadowThemeBrush = Application.Current.Resources["TranslationInfosDropShadowColorBrush"] as SolidColorBrush;
-                            if (dropShadow.Color != dropShadowThemeBrush.Color)
-                            {
-                                dropShadow.Color = dropShadowThemeBrush.Color;
-                            }
-                        });
-                });
+            var dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += async (sender, e) =>
+            {
+                await CoreApplication.MainView.CoreWindow.Dispatcher
+                       .RunAsync(CoreDispatcherPriority.High, () =>
+                       {
+                           var dropShadowThemeBrush = Application.Current.Resources["TranslationInfosDropShadowColorBrush"] as SolidColorBrush;
+                           if (dropShadow.Color != dropShadowThemeBrush.Color)
+                           {
+                               dropShadow.Color = dropShadowThemeBrush.Color;
+                           }
+                       });
+            };
+            dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            dispatcherTimer.Start();
 
             // Associate the shape of the shadow with the shape of the target element
             dropShadow.Mask = TranslationInfosShape.GetAlphaMask();
