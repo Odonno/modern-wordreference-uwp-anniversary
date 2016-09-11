@@ -1,0 +1,24 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ModernWordreference.Styles">
+
+    <!-- Original theme colors -->
+    <SolidColorBrush x:Key="ThemePrimaryBrush" Color="#5E58C6"></SolidColorBrush>
+    <SolidColorBrush x:Key="ApplicationPageBackgroundThemeBrush" Color="#5E58C6"></SolidColorBrush>
+    <SolidColorBrush x:Key="CommandBarBackground" Color="#5E58C6"></SolidColorBrush>
+
+    <!-- Colors -->
+    <SolidColorBrush x:Key="TranslationItemBorderBrush" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="CardForegroundBrush" Color="#5E58C6"></SolidColorBrush>
+    <SolidColorBrush x:Key="TranslationInfosBackgroundBrush" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="TranslationInfosForegroundBrush" Color="#5E58C6"></SolidColorBrush>
+    <SolidColorBrush x:Key="TranslationInfosDropShadowColorBrush" Color="White"></SolidColorBrush>
+
+    <!-- System Colors -->
+    <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="White" />
+    <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="White" />
+
+</ResourceDictionary>

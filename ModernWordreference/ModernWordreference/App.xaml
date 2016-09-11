@@ -184,35 +184,8 @@
 
             <!-- Theme resources -->
             <ResourceDictionary.ThemeDictionaries>
-                <ResourceDictionary x:Key="Dark">
-                    <!-- Colors -->
-                    <SolidColorBrush x:Key="TranslationItemBorderBrush" Color="White"></SolidColorBrush>
-                    <SolidColorBrush x:Key="CardBorderBrush" Color="White"></SolidColorBrush>
-                    <SolidColorBrush x:Key="CardBackgroundBrush" Color="White"></SolidColorBrush>
-                    <SolidColorBrush x:Key="CardForegroundBrush" Color="Black"></SolidColorBrush>
-                    <SolidColorBrush x:Key="TranslationInfosBackgroundBrush" Color="White"></SolidColorBrush>
-                    <SolidColorBrush x:Key="TranslationInfosForegroundBrush" Color="Black"></SolidColorBrush>
-                    <SolidColorBrush x:Key="TranslationInfosDropShadowColorBrush" Color="#EBEBF0"></SolidColorBrush>
-                    
-                    <!-- System Colors -->
-                    <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="White" />
-                    <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="White" />
-                </ResourceDictionary>
-
-                <ResourceDictionary x:Key="Light">
-                    <!-- Colors -->
-                    <SolidColorBrush x:Key="TranslationItemBorderBrush" Color="Black"></SolidColorBrush>
-                    <SolidColorBrush x:Key="CardBorderBrush" Color="Black"></SolidColorBrush>
-                    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource SystemBaseMediumHighColor}"></SolidColorBrush>
-                    <SolidColorBrush x:Key="CardForegroundBrush" Color="White"></SolidColorBrush>
-                    <SolidColorBrush x:Key="TranslationInfosBackgroundBrush" Color="{StaticResource SystemBaseMediumHighColor}"></SolidColorBrush>
-                    <SolidColorBrush x:Key="TranslationInfosForegroundBrush" Color="White"></SolidColorBrush>
-                    <SolidColorBrush x:Key="TranslationInfosDropShadowColorBrush" Color="#4B4B50"></SolidColorBrush>
-
-                    <!-- System Colors -->
-                    <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{StaticResource SystemBaseMediumColor}" />
-                    <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="{StaticResource SystemBaseMediumColor}" />
-                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark" Source="Styles/DarkThemeDictionary" />
+                <ResourceDictionary x:Key="Light" Source="Styles/LightThemeDictionary" />
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Application.Resources>

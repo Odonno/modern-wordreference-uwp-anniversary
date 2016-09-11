@@ -44,6 +44,9 @@ namespace ModernWordreference
 
             // Set screen size
             SetScreenSize();
+
+            // Load theme
+            LoadTheme(false);
         }
 
         #endregion
@@ -57,6 +60,9 @@ namespace ModernWordreference
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            // Load theme
+            LoadTheme(true);
+
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -170,6 +176,43 @@ namespace ModernWordreference
 
             titleBar.ButtonPressedForegroundColor = foregroundColor;
             titleBar.ButtonPressedBackgroundColor = backgroundColor;
+        }
+
+        private void LoadTheme(bool appLoaded)
+        {
+            string selectedTheme = "Original";
+
+            if (selectedTheme == "Original")
+            {
+                // Original theme
+                if (!appLoaded)
+                    RequestedTheme = ApplicationTheme.Dark;
+
+                if (appLoaded)
+                {
+                    Resources.ThemeDictionaries.Add("Default", new ResourceDictionary { Source = new Uri("ms-appx:///Styles/OriginalThemeDictionary.xaml") });
+                    Resources.ThemeDictionaries.Remove("Dark");
+                    Resources.ThemeDictionaries.Remove("Light");
+
+                    SetTitleBar();
+                }
+            }
+            else if (selectedTheme == "Light")
+            {
+                // Light theme
+                if (!appLoaded)
+                    RequestedTheme = ApplicationTheme.Light;
+            }
+            else if (selectedTheme == "Dark")
+            {
+                // Dark theme
+                if (!appLoaded)
+                    RequestedTheme = ApplicationTheme.Dark;
+            }
+            else
+            {
+                // System theme
+            }
         }
 
         #endregion

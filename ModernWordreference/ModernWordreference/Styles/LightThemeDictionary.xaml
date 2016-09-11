@@ -1,0 +1,19 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ModernWordreference.Styles">
+
+    <!-- Colors -->
+    <SolidColorBrush x:Key="TranslationItemBorderBrush" Color="Black"></SolidColorBrush>
+    <SolidColorBrush x:Key="CardBorderBrush" Color="Black"></SolidColorBrush>
+    <SolidColorBrush x:Key="CardBackgroundBrush" Color="{StaticResource SystemBaseMediumHighColor}"></SolidColorBrush>
+    <SolidColorBrush x:Key="CardForegroundBrush" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="TranslationInfosBackgroundBrush" Color="{StaticResource SystemBaseMediumHighColor}"></SolidColorBrush>
+    <SolidColorBrush x:Key="TranslationInfosForegroundBrush" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="TranslationInfosDropShadowColorBrush" Color="#4B4B50"></SolidColorBrush>
+
+    <!-- System Colors -->
+    <SolidColorBrush x:Key="SystemControlHighlightListAccentLowBrush" Color="{StaticResource SystemBaseMediumColor}" />
+    <SolidColorBrush x:Key="SystemControlHighlightListAccentMediumBrush" Color="{StaticResource SystemBaseMediumColor}" />
+
+</ResourceDictionary>
