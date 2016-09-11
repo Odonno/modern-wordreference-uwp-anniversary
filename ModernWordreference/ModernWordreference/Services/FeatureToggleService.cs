@@ -13,7 +13,6 @@ namespace ModernWordreference.Services
         bool IsNotificationBackgroundTasksEnabled();
         bool UseFeedbackHubApp();
         bool IsRunningWindowsMobile();
-        bool UseColorTitleBar();
         bool LoadAllTranslations();
     }
 
@@ -34,11 +33,6 @@ namespace ModernWordreference.Services
         public bool IsRunningWindowsMobile()
         {
             return AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Mobile";
-        }
-
-        public bool UseColorTitleBar()
-        {
-            return false;
         }
 
         public bool LoadAllTranslations()

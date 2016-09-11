@@ -106,12 +106,6 @@ namespace ModernWordreference
 
             // Set status bar
             SetStatusBar();
-
-            // Set title bar
-            if (SimpleIoc.Default.GetInstance<IFeatureToggleService>().UseColorTitleBar())
-            {
-                SetTitleBar();
-            }
         }
 
         /// <summary>
