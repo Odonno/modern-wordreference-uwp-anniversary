@@ -123,6 +123,7 @@ namespace ModernWordreference.Views
         {
             var hostVisual = ElementCompositionPreview.GetElementVisual(TranslationInfosSubGrid);
             var compositor = hostVisual.Compositor;
+            SolidColorBrush dropShadowThemeBrush = null;
 
             // Create a drop shadow
             var dropShadow = compositor.CreateDropShadow();
@@ -136,7 +137,7 @@ namespace ModernWordreference.Views
                 await CoreApplication.MainView.CoreWindow.Dispatcher
                        .RunAsync(CoreDispatcherPriority.High, () =>
                        {
-                           var dropShadowThemeBrush = Application.Current.Resources["TranslationInfosDropShadowColorBrush"] as SolidColorBrush;
+                           dropShadowThemeBrush = Application.Current.Resources["TranslationInfosDropShadowColorBrush"] as SolidColorBrush;
                            if (dropShadow.Color != dropShadowThemeBrush.Color)
                            {
                                dropShadow.Color = dropShadowThemeBrush.Color;
@@ -145,6 +146,13 @@ namespace ModernWordreference.Views
             };
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
             dispatcherTimer.Start();
+
+            // Set color by default (first start)
+            dropShadowThemeBrush = Application.Current.Resources["TranslationInfosDropShadowColorBrush"] as SolidColorBrush;
+            if (dropShadow.Color != dropShadowThemeBrush.Color)
+            {
+                dropShadow.Color = dropShadowThemeBrush.Color;
+            }
 
             // Associate the shape of the shadow with the shape of the target element
             dropShadow.Mask = TranslationInfosShape.GetAlphaMask();
