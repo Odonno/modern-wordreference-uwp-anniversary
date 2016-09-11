@@ -33,7 +33,7 @@
                 </AppBarButton.Icon>
             </AppBarButton>
 
-            <AppBarButton x:Uid="/UIResources/SettingsButton" Icon="Setting" Visibility="Collapsed"
+            <AppBarButton x:Uid="/UIResources/SettingsButton" Icon="Setting"
                           Label="Settings" Click="{x:Bind ViewModel.GoToSettingsPage}"></AppBarButton>
         </CommandBar>
     </Page.TopAppBar>

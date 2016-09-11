@@ -136,8 +136,10 @@
     <Compile Include="Models\TranslationSummary.cs" />
     <Compile Include="Services\AnalyticsService.cs" />
     <Compile Include="Services\ApiService.cs" />
+    <Compile Include="Services\BaseStorageService.cs" />
     <Compile Include="Services\DictionaryService.cs" />
     <Compile Include="Services\FeatureToggleService.cs" />
+    <Compile Include="Services\LocalStorageService.cs" />
     <Compile Include="Services\NetworkService.cs" />
     <Compile Include="Services\RoamingStorageService.cs" />
     <Compile Include="Services\ToastNotificationService.cs" />

@@ -130,7 +130,7 @@ namespace ModernWordreference.ViewModels
             RaisePropertyChanged(nameof(Source));
 
             // Retrieve currently selected dictionary
-            var savedDictionary = _storageService.Retrieve<Models.Dictionary>(StorageConstants.CurrentDictionary);
+            var savedDictionary = _storageService.Read<Models.Dictionary>(StorageConstants.CurrentDictionary);
             if (savedDictionary != null)
             {
                 SelectedDictionary = _dictionaryService.Get(savedDictionary.From, savedDictionary.To);
@@ -153,7 +153,7 @@ namespace ModernWordreference.ViewModels
             if (SelectedDictionary == null)
                 return;
 
-            var savedDictionary = _storageService.Retrieve<Models.Dictionary>(StorageConstants.CurrentDictionary);
+            var savedDictionary = _storageService.Read<Models.Dictionary>(StorageConstants.CurrentDictionary);
 
             // Check if we have really change of dictionary
             if (savedDictionary != null && (SelectedDictionary.From != savedDictionary.From || SelectedDictionary.To != savedDictionary.To))

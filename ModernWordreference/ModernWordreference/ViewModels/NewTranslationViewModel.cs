@@ -108,7 +108,7 @@ namespace ModernWordreference.ViewModels
         private async void InitializeAsync()
         {
             // Retrieve current dictionary
-            CurrentDictionary = _storageService.Retrieve<Models.Dictionary>(StorageConstants.CurrentDictionary);
+            CurrentDictionary = _storageService.Read<Models.Dictionary>(StorageConstants.CurrentDictionary);
             if (CurrentDictionary == null)
             {
                 CurrentDictionary = _dictionaryService.Get("en", "fr");
@@ -116,7 +116,7 @@ namespace ModernWordreference.ViewModels
             }
 
             // Retrieve last saved translation
-            LastTranslation = await _storageService.RetrieveFileAsync<Models.TranslationResult>(StorageConstants.LastTranslation);
+            LastTranslation = await _storageService.ReadFileAsync<Models.TranslationResult>(StorageConstants.LastTranslation);
         }
 
         #endregion

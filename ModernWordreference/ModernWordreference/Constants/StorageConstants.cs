@@ -27,5 +27,10 @@ namespace ModernWordreference.Constants
         /// Save / Retrieve list of all translations (summarized by searched date and file name)
         /// </summary>
         public static string TranslationSummaries = "allTranslationsList.txt";
+
+        /// <summary>
+        /// Save / Retrieve selected theme
+        /// </summary>
+        public static string SelectedTheme = "selectedTheme";
     }
 }

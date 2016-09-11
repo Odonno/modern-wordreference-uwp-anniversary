@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Ioc;
 using Microsoft.ApplicationInsights;
+using ModernWordreference.Constants;
 using ModernWordreference.Services;
 using ModernWordreference.Views;
 using System;
@@ -12,6 +13,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
+using Windows.Storage;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -180,7 +182,7 @@ namespace ModernWordreference
 
         private void LoadTheme(bool appLoaded)
         {
-            string selectedTheme = "Original";
+            string selectedTheme = new LocalStorageService().Read<string>(StorageConstants.SelectedTheme);
 
             if (selectedTheme == "Original")
             {

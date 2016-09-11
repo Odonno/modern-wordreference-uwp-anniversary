@@ -171,7 +171,13 @@
   <data name="SearchTextBox.PlaceholderText" xml:space="preserve">
     <value>Búsqueda un lenguaje</value>
   </data>
+  <data name="SelectThemeText.Text" xml:space="preserve">
+    <value>Selecciona un tema (es necesario reiniciar)</value>
+  </data>
   <data name="SettingsButton.Label" xml:space="preserve">
+    <value>Opciones</value>
+  </data>
+  <data name="SettingsPageTitle.Text" xml:space="preserve">
     <value>Opciones</value>
   </data>
   <data name="StartTranslationText.Text" xml:space="preserve">
@@ -179,6 +185,9 @@
   </data>
   <data name="TheBookIapContent.Text" xml:space="preserve">
     <value>Una historia completa.</value>
+  </data>
+  <data name="ThemesSubTitle.Text" xml:space="preserve">
+    <value>Temas</value>
   </data>
   <data name="ThePageIapContent.Text" xml:space="preserve">
     <value>Sólo una izquierda antes del final del libro.</value>

@@ -63,7 +63,7 @@ namespace ModernWordreference.ViewModels
         private void Initialize()
         {
             // Retrieve already purchased items
-            IapBuyed = _storageService.Retrieve<Models.IapBuyed>(StorageConstants.IapBuyed);
+            IapBuyed = _storageService.Read<Models.IapBuyed>(StorageConstants.IapBuyed);
             if (IapBuyed == null)
             {
                 IapBuyed = new Models.IapBuyed();

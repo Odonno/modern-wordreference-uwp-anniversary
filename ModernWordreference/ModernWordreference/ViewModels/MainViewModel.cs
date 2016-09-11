@@ -133,7 +133,7 @@ namespace ModernWordreference.ViewModels
             TranslationsCardItems.Add("New Translation");
 
             // Retrieve list of translation summaries
-            var translationSummaries = _storageService.Retrieve<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
+            var translationSummaries = _storageService.Read<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
             if (translationSummaries != null)
             {
                 var lastTranslations = translationSummaries
@@ -143,7 +143,7 @@ namespace ModernWordreference.ViewModels
 
                 foreach (var translationSummary in lastTranslations)
                 {
-                    var translation = await _storageService.RetrieveFileAsync<Models.TranslationResult>(translationSummary.Filename);
+                    var translation = await _storageService.ReadFileAsync<Models.TranslationResult>(translationSummary.Filename);
 
                     AllTranslations.Add(translation);
                     TranslationsCardItems.Insert(1, translation);
@@ -192,7 +192,7 @@ namespace ModernWordreference.ViewModels
             await _storageService.SaveFileAsync(translation.Filename, translation);
 
             // Add the new translation in the summaries list
-            var translationSummaries = _storageService.Retrieve<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
+            var translationSummaries = _storageService.Read<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
             if (translationSummaries == null)
             {
                 translationSummaries = new List<Models.TranslationSummary>();
