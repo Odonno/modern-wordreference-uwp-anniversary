@@ -39,6 +39,32 @@
     </Page.TopAppBar>
 
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="Large">
+                    <VisualState.Setters>
+                        <Setter Target="NewTranslationControl.Width" Value="400" />
+                        <Setter Target="NewTranslationControl.Height" Value="270" />
+                    </VisualState.Setters>
+
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="500" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+
+                <VisualState x:Name="Mobile">
+                    <VisualState.Setters>
+                        <Setter Target="NewTranslationControl.Width" Value="300" />
+                        <Setter Target="NewTranslationControl.Height" Value="250" />
+                    </VisualState.Setters>
+
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <Grid x:Name="ContentGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Tapped="{x:Bind ViewModel.TapOnPage}">
             <Grid x:Name="NoPreviousTranslationGrid" Visibility="{x:Bind ViewModel.ShowNoPreviousTranslationGrid, Mode=OneWay}">
                 <StackPanel x:Name="NoTranslationPanel" Margin="20 0"
