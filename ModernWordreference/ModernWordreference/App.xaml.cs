@@ -102,10 +102,7 @@ namespace ModernWordreference
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
-            }
-
-            // Set status bar
-            SetStatusBar();
+            }            
         }
 
         /// <summary>
@@ -148,7 +145,7 @@ namespace ModernWordreference
             {
                 var statusBar = StatusBar.GetForCurrentView();
                 statusBar.BackgroundOpacity = 1;
-                statusBar.BackgroundColor = (Resources["ApplicationPageBackgroundBrush"] as SolidColorBrush).Color;
+                statusBar.BackgroundColor = Color.FromArgb(255, 94, 88, 198);
             }
         }
 
@@ -191,6 +188,7 @@ namespace ModernWordreference
                     Resources.ThemeDictionaries.Remove("Light");
 
                     SetTitleBar();
+                    SetStatusBar();
                 }
             }
             else if (selectedTheme == "Light")
