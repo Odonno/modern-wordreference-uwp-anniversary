@@ -1,1 +1,1 @@
-C:\Users\david\Documents\GitHub\modern-wordreference-uwp-anniversary\ModernWordreference\ModernWordreference\AppPackages\ModernWordreference_4.0.14.0\ModernWordreference_4.0.14.0_x86_x64_arm.appxbundle
+C:\Users\david\Documents\GitHub\modern-wordreference-uwp-anniversary\ModernWordreference\ModernWordreference\AppPackages\ModernWordreference_4.0.16.0\ModernWordreference_4.0.16.0_x86_x64_arm.appxbundle

@@ -10,10 +10,12 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel Margin="10 0" Orientation="Vertical">
+            <!-- Title -->
             <TextBlock x:Uid="/UIResources/SettingsPageTitle" x:Name="PageTitle" 
                        FontSize="36" Text="Settings"
                        Style="{StaticResource HeaderTextBlockStyle}" />
 
+            <!-- Themes part -->
             <TextBlock x:Uid="/UIResources/ThemesSubTitle" Text="Themes" Margin="0 10 0 0"
                        FontWeight="Bold" />
 
@@ -21,8 +23,19 @@
                        TextWrapping="Wrap" />
             <ComboBox ItemsSource="{x:Bind ViewModel.Themes}" Margin="0 5 0 0"
                       SelectedItem="{x:Bind ViewModel.SelectedTheme, Mode=OneWay}"
-                      SelectionChanged="{x:Bind ViewModel.SaveSelectedTheme}"
-                      MinWidth="150" />
+                      SelectionChanged="{x:Bind ViewModel.SaveSelectedTheme}" />
+
+            <!-- History part -->
+            <TextBlock x:Uid="/UIResources/HistorySubTitle" Text="History" Margin="0 10 0 0"
+                       FontWeight="Bold" />
+
+            <Button Margin="0 5 0 0" Click="{x:Bind ViewModel.RemoveHistory}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;"
+                               VerticalAlignment="Center" />
+                    <TextBlock x:Uid="/UIResources/RemoveHistoryText" Margin="6 0 0 0" Text="Remove history" />
+                </StackPanel>
+            </Button>
         </StackPanel>
     </Grid>
 </Page>

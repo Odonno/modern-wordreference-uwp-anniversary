@@ -10,5 +10,6 @@ namespace ModernWordreference.Models
     {
         public DateTime SearchedDate { get; set; }
         public string Filename { get; set; }
+        public bool Removed { get; set; }
     }
 }

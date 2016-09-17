@@ -30,7 +30,7 @@ namespace ModernWordreference.ViewModels
         private INavigationService _navigationService;
         private IApiService _apiService;
         private IDictionaryService _dictionaryService;
-        private IRoamingStorageService _storageService;
+        private IRoamingStorageService _roamingStorageService;
         private IAnalyticsService _analyticsService;
         private INetworkService _networkService;
 
@@ -95,12 +95,12 @@ namespace ModernWordreference.ViewModels
 
         #region Constructor
 
-        public MainViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, IRoamingStorageService storageService, IAnalyticsService analyticsService, INetworkService networkService)
+        public MainViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, IRoamingStorageService roamingStorageService, IAnalyticsService analyticsService, INetworkService networkService)
         {
             _navigationService = navigationService;
             _apiService = apiService;
             _dictionaryService = dictionaryService;
-            _storageService = storageService;
+            _roamingStorageService = roamingStorageService;
             _analyticsService = analyticsService;
             _networkService = networkService;
 
@@ -109,6 +109,11 @@ namespace ModernWordreference.ViewModels
             Messenger.Default.Register<NewTranslationMessage>(this, async (message) =>
             {
                 await AddTranslationAsync(message.Translation);
+            });
+
+            Messenger.Default.Register<HistoryRemovedMessage>(this, async (message) =>
+            {
+                await CreateTranslationCardsAsync();
             });
         }
 
@@ -119,6 +124,48 @@ namespace ModernWordreference.ViewModels
         private async void InitializeAsync()
         {
             // Handle network connection
+            HandleNetworkConnection();
+
+            // Create TranslationsCardItems list
+            await CreateTranslationCardsAsync();
+        }
+
+        private async Task CreateTranslationCardsAsync()
+        {
+            // Remove all cards
+            TranslationsCardItems.Clear();
+
+            // Add the card "new translation"
+            TranslationsCardItems.Add("New Translation");
+
+            // Retrieve list of translation summaries
+            var translationSummaries = _roamingStorageService.Read<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
+            if (translationSummaries != null)
+            {
+                var lastTranslations = translationSummaries
+                    .Where(ts => !ts.Removed)
+                    .OrderByDescending(ts => ts.SearchedDate)
+                    .Take(AppConstants.MaxSavedTranslations)
+                    .Reverse();
+
+                foreach (var translationSummary in lastTranslations)
+                {
+                    var translation = await _roamingStorageService.ReadFileAsync<Models.TranslationResult>(translationSummary.Filename);
+
+                    AllTranslations.Add(translation);
+                    TranslationsCardItems.Insert(1, translation);
+                }
+
+                if (CurrentTranslation == null || AllTranslations.Last().Filename != CurrentTranslation.Filename)
+                {
+                    CurrentTranslation = AllTranslations.Last();
+                    UpdateSource();
+                }
+            }
+        }
+
+        private void HandleNetworkConnection()
+        {
             RaisePropertyChanged(nameof(HasNetwork));
             NetworkInformation.NetworkStatusChanged += async _ =>
             {
@@ -128,30 +175,6 @@ namespace ModernWordreference.ViewModels
                         RaisePropertyChanged(nameof(HasNetwork));
                     });
             };
-
-            // Create TranslationsCardItems list
-            TranslationsCardItems.Add("New Translation");
-
-            // Retrieve list of translation summaries
-            var translationSummaries = _storageService.Read<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
-            if (translationSummaries != null)
-            {
-                var lastTranslations = translationSummaries
-                    .OrderByDescending(ts => ts.SearchedDate)
-                    .Take(AppConstants.MaxSavedTranslations)
-                    .Reverse();
-
-                foreach (var translationSummary in lastTranslations)
-                {
-                    var translation = await _storageService.ReadFileAsync<Models.TranslationResult>(translationSummary.Filename);
-
-                    AllTranslations.Add(translation);
-                    TranslationsCardItems.Insert(1, translation);
-                }
-
-                CurrentTranslation = AllTranslations.Last();
-                UpdateSource();
-            }
         }
 
         private void UpdateSource()
@@ -189,10 +212,10 @@ namespace ModernWordreference.ViewModels
             ShowNewTranslationControl = false;
 
             // Save translation in the file
-            await _storageService.SaveFileAsync(translation.Filename, translation);
+            await _roamingStorageService.SaveFileAsync(translation.Filename, translation);
 
             // Add the new translation in the summaries list
-            var translationSummaries = _storageService.Read<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
+            var translationSummaries = _roamingStorageService.Read<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
             if (translationSummaries == null)
             {
                 translationSummaries = new List<Models.TranslationSummary>();
@@ -202,7 +225,7 @@ namespace ModernWordreference.ViewModels
                 SearchedDate = DateTime.Now,
                 Filename = translation.Filename
             });
-            _storageService.Save(StorageConstants.TranslationSummaries, translationSummaries);
+            _roamingStorageService.Save(StorageConstants.TranslationSummaries, translationSummaries);
 
             // Remove translations if it exceed size of the card list
             while (TranslationsCardItems.Count - 1 > AppConstants.MaxSavedTranslations)
@@ -269,7 +292,7 @@ namespace ModernWordreference.ViewModels
 
             await Task.Delay(50);
             _clickOnCard = false;
-            Messenger.Default.Send<ShowNewTranslationControlMessage>(new ShowNewTranslationControlMessage());
+            Messenger.Default.Send(new ShowNewTranslationControlMessage());
         }
 
         public void TapOnPage()

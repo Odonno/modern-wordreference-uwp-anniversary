@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
 using ModernWordreference.Constants;
+using ModernWordreference.Messages;
 using ModernWordreference.Services;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,7 @@ namespace ModernWordreference.ViewModels
         #region Fields
 
         private ILocalStorageService _localStorageService;
+        private IRoamingStorageService _roamingStorageService;
 
         #endregion
 
@@ -39,9 +42,10 @@ namespace ModernWordreference.ViewModels
 
         #region Constructor
 
-        public SettingsViewModel(ILocalStorageService localStorageService)
+        public SettingsViewModel(ILocalStorageService localStorageService, IRoamingStorageService roamingStorageService)
         {
             _localStorageService = localStorageService;
+            _roamingStorageService = roamingStorageService;
 
             SelectedTheme = _localStorageService.Read(StorageConstants.SelectedTheme, "System (Dark/Light)");
         }
@@ -57,6 +61,23 @@ namespace ModernWordreference.ViewModels
             {
                 SelectedTheme = selection;
                 _localStorageService.Save(StorageConstants.SelectedTheme, SelectedTheme);
+            }
+        }
+
+        public void RemoveHistory()
+        {
+            var translationSummaries = _roamingStorageService.Read<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
+            if (translationSummaries != null)
+            {
+                var historyTranslations = translationSummaries.OrderByDescending(ts => ts.SearchedDate).Skip(1);
+                foreach (var translationSummary in historyTranslations)
+                {
+                    translationSummary.Removed = true;
+                }
+
+                _roamingStorageService.Save(StorageConstants.TranslationSummaries, translationSummaries);
+
+                Messenger.Default.Send(new HistoryRemovedMessage());
             }
         }
 

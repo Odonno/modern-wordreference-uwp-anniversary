@@ -126,6 +126,7 @@
     <Compile Include="Constants\StorageConstants.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Infrastructure\ViewModelLocator.cs" />
+    <Compile Include="Messages\HistoryRemovedMessage.cs" />
     <Compile Include="Messages\NewTranslationMessage.cs" />
     <Compile Include="Messages\SelectDictionaryMessage.cs" />
     <Compile Include="Messages\ShowNewTranslationControlMessage.cs" />

@@ -198,4 +198,10 @@
   <data name="WordTextBox.PlaceholderText" xml:space="preserve">
     <value>Entrez un mot à traduire</value>
   </data>
+  <data name="HistorySubTitle.Text" xml:space="preserve">
+    <value>Historique</value>
+  </data>
+  <data name="RemoveHistoryText.Text" xml:space="preserve">
+    <value>Supprimer l'historique</value>
+  </data>
 </root>
