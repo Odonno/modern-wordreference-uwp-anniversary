@@ -186,14 +186,14 @@ namespace ModernWordreference.ViewModels
                 // Update text
                 Word = suggestion.Word;
 
+                await ExecuteSearchAsync();
+
                 // Send telemetry
                 _analyticsService.TrackEvent("SelectSuggestion", new Dictionary<string, string> {
                     { "From", LastTranslation.Dictionary.From },
                     { "To", LastTranslation.Dictionary.To },
                     { "Suggestion", Word }
                 });
-
-                await ExecuteSearchAsync();
             }
         }
 
