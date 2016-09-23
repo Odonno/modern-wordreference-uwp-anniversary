@@ -204,4 +204,13 @@
   <data name="RemoveHistoryText.Text" xml:space="preserve">
     <value>Remove history</value>
   </data>
+  <data name="SuggestionsSubTitle.Text" xml:space="preserve">
+    <value>Suggestions</value>
+  </data>
+  <data name="SuggestionsToggleSwitch.OffContent" xml:space="preserve">
+    <value>Suggestions in default order</value>
+  </data>
+  <data name="SuggestionsToggleSwitch.OnContent" xml:space="preserve">
+    <value>Suggestions inverted</value>
+  </data>
 </root>

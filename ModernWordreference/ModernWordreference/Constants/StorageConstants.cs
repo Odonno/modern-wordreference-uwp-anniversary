@@ -32,5 +32,10 @@ namespace ModernWordreference.Constants
         /// Save / Retrieve selected theme
         /// </summary>
         public static string SelectedTheme = "selectedTheme";
+
+        /// <summary>
+        /// Save / Retrieve if user invert suggestions
+        /// </summary>
+        public static string InvertSuggestions = "invertSuggestions";
     }
 }

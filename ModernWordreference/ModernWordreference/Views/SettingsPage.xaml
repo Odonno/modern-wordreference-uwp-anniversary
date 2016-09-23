@@ -36,6 +36,15 @@
                     <TextBlock x:Uid="/UIResources/RemoveHistoryText" Margin="6 0 0 0" Text="Remove history" />
                 </StackPanel>
             </Button>
+
+            <!-- Suggestions part -->
+            <TextBlock x:Uid="/UIResources/SuggestionsSubTitle" Text="Suggestions" Margin="0 10 0 0"
+                       FontWeight="Bold" />
+
+            <ToggleSwitch x:Uid="/UIResources/SuggestionsToggleSwitch"
+                          IsOn="{x:Bind ViewModel.InvertSuggestions, Mode=TwoWay}" 
+                          OnContent="Suggestions inverted"
+                          OffContent="Suggestions in default order" />
         </StackPanel>
     </Grid>
 </Page>

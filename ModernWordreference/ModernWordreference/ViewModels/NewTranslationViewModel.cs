@@ -24,7 +24,8 @@ namespace ModernWordreference.ViewModels
         private INavigationService _navigationService;
         private IApiService _apiService;
         private IDictionaryService _dictionaryService;
-        private IRoamingStorageService _storageService;
+        private IRoamingStorageService _roamingStorageService;
+        private ILocalStorageService _localStorageService;
         private IToastNotificationService _toastNotificationService;
         private IAnalyticsService _analyticsService;
 
@@ -84,12 +85,13 @@ namespace ModernWordreference.ViewModels
 
         #region Constructor
 
-        public NewTranslationViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, IRoamingStorageService storageService, IToastNotificationService toastNotificationService, IAnalyticsService analyticsService)
+        public NewTranslationViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, IRoamingStorageService roamingStorageService, ILocalStorageService localStorageService, IToastNotificationService toastNotificationService, IAnalyticsService analyticsService)
         {
             _navigationService = navigationService;
             _apiService = apiService;
             _dictionaryService = dictionaryService;
-            _storageService = storageService;
+            _roamingStorageService = roamingStorageService;
+            _localStorageService = localStorageService;
             _toastNotificationService = toastNotificationService;
             _analyticsService = analyticsService;
 
@@ -108,15 +110,15 @@ namespace ModernWordreference.ViewModels
         private async void InitializeAsync()
         {
             // Retrieve current dictionary
-            CurrentDictionary = _storageService.Read<Models.Dictionary>(StorageConstants.CurrentDictionary);
+            CurrentDictionary = _roamingStorageService.Read<Models.Dictionary>(StorageConstants.CurrentDictionary);
             if (CurrentDictionary == null)
             {
                 CurrentDictionary = _dictionaryService.Get("en", "fr");
-                _storageService.Save(StorageConstants.CurrentDictionary, CurrentDictionary);
+                _roamingStorageService.Save(StorageConstants.CurrentDictionary, CurrentDictionary);
             }
 
             // Retrieve last saved translation
-            LastTranslation = await _storageService.ReadFileAsync<Models.TranslationResult>(StorageConstants.LastTranslation);
+            LastTranslation = await _roamingStorageService.ReadFileAsync<Models.TranslationResult>(StorageConstants.LastTranslation);
         }
 
         #endregion
@@ -151,10 +153,19 @@ namespace ModernWordreference.ViewModels
                 // Retrieve suggestions
                 if (CanExecuteSearch)
                 {
+                    var suggestionsInverted = _localStorageService.Read(StorageConstants.InvertSuggestions, false);
+
                     var suggestions = await _apiService.RetrieveSuggestionsAsync(Word, CurrentDictionary);
                     foreach (var suggestion in suggestions)
                     {
-                        Suggestions.Add(suggestion);
+                        if (suggestionsInverted)
+                        {
+                            Suggestions.Insert(0, suggestion);
+                        }
+                        else
+                        {
+                            Suggestions.Add(suggestion);
+                        }
                     }
                 }
             }
@@ -236,7 +247,7 @@ namespace ModernWordreference.ViewModels
             Suggestions.Clear();
 
             // Save result
-            await _storageService.SaveFileAsync(StorageConstants.LastTranslation, LastTranslation);
+            await _roamingStorageService.SaveFileAsync(StorageConstants.LastTranslation, LastTranslation);
 
             // Send result to other ViewModels
             Messenger.Default.Send<NewTranslationMessage>(new NewTranslationMessage

@@ -38,6 +38,13 @@ namespace ModernWordreference.ViewModels
             set { _selectedTheme = value; }
         }
 
+        private bool _invertSuggestions;
+        public bool InvertSuggestions
+        {
+            get { return _invertSuggestions; }
+            set { _invertSuggestions = value; SaveInvertSuggestions(); }
+        }
+
         #endregion
 
         #region Constructor
@@ -48,6 +55,7 @@ namespace ModernWordreference.ViewModels
             _roamingStorageService = roamingStorageService;
 
             SelectedTheme = _localStorageService.Read(StorageConstants.SelectedTheme, "System (Dark/Light)");
+            InvertSuggestions = _localStorageService.Read(StorageConstants.InvertSuggestions, false);
         }
 
         #endregion
@@ -79,6 +87,11 @@ namespace ModernWordreference.ViewModels
 
                 Messenger.Default.Send(new HistoryRemovedMessage());
             }
+        }
+
+        public void SaveInvertSuggestions()
+        {
+            _localStorageService.Save(StorageConstants.InvertSuggestions, InvertSuggestions);
         }
 
         #endregion
