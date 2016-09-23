@@ -202,6 +202,9 @@
     <Content Include="Images\Flags\tr.png" />
     <Content Include="Images\Flags\zh.png" />
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="ModernWordReferenceCommands.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

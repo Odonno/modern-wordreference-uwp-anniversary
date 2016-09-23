@@ -1,15 +1,19 @@
 ﻿using GalaSoft.MvvmLight.Ioc;
 using Microsoft.ApplicationInsights;
 using ModernWordreference.Constants;
+using ModernWordreference.Infrastructure;
 using ModernWordreference.Services;
 using ModernWordreference.Views;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.VoiceCommands;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
@@ -60,17 +64,20 @@ namespace ModernWordreference
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             // Load theme
             LoadTheme(true);
 
 #if DEBUG
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+
+            #region Page navigation
+
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -79,7 +86,6 @@ namespace ModernWordreference
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
-
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
@@ -102,7 +108,11 @@ namespace ModernWordreference
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
-            }            
+            }
+
+            #endregion
+
+            await InstallVoiceCommandDefinitionsAsync();
         }
 
         /// <summary>
@@ -113,6 +123,72 @@ namespace ModernWordreference
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
+
+        /// <summary>
+        /// Entry point for an application activated by some means other than normal launching.
+        /// This includes voice commands, URI, share target from another app, and so on.
+        /// </summary>
+        /// <param name="args">Details about the activation method.</param>
+        protected override async void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+
+            #region Page navigation
+
+            // Repeat the same basic initialization as OnLaunched() above, taking into account whether or not the app is already active.
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            // Do not repeat app initialization when the Window already has content, just ensure that the window is active.
+            if (rootFrame == null)
+            {
+                // Create a frame to act as the navigation context and navigate to the first page.
+                rootFrame = new Frame();
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                // Place the frame in the current window.
+                Window.Current.Content = rootFrame;
+            }
+
+            // Since we're expecting to always show a details page, navigate even if a content frame is in place (unlike OnLaunched).
+            // Navigate to either the main trip list page, or if a valid voice command was provided, to the details page for that trip.
+            rootFrame.Navigate(typeof(MainPage), args);
+
+            // Ensure the current window is active
+            Window.Current.Activate();
+
+            #endregion
+
+            #region Voice handle
+
+            // Voice command activation
+            if (args.Kind == ActivationKind.VoiceCommand)
+            {
+                // Event args can represent many different activation types
+                var commandArgs = args as VoiceCommandActivatedEventArgs;
+                var speechRecognitionResult = commandArgs.Result;
+
+                // Get the name of the voice command and the text spoken
+                string voiceCommandName = speechRecognitionResult.RulePath[0];
+                string textSpoken = speechRecognitionResult.Text;
+
+                // commandMode indicates whether the command was entered using speech or text
+                // Apps should respect text mode by providing silent (text) feedback
+                string commandMode = speechRecognitionResult.SemanticInterpretation.Properties["commandMode"].FirstOrDefault();
+
+                switch (voiceCommandName)
+                {
+                    case "startNewTranslation":
+                        // Start new translation from main page
+                        await ViewModelLocator.Main.StartNewTranslationAsync();
+                        break;
+                    default:
+                        // If we can't determine what page to launch, go to the default entry point.
+                        break;
+                }
+            }
+
+            #endregion
         }
 
         /// <summary>
@@ -206,6 +282,20 @@ namespace ModernWordreference
             else
             {
                 // System theme
+            }
+        }
+
+        private async Task InstallVoiceCommandDefinitionsAsync()
+        {
+            try
+            {
+                // Install the main VCD
+                var vcdStorageFile = await Package.Current.InstalledLocation.GetFileAsync(@"ModernWordReferenceCommands.xml");
+                await VoiceCommandDefinitionManager.InstallCommandDefinitionsFromStorageFileAsync(vcdStorageFile);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Installing Voice Commands Failed: " + ex.ToString());
             }
         }
 

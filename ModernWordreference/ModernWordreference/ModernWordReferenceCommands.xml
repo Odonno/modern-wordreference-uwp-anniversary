@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
+  <CommandSet xml:lang="en-us" Name="ModernWordReferenceCommandSet_en-us">
+    <AppName>WordReference</AppName>
+    <Example>Start a new translation</Example>
+  
+    <Command Name="startNewTranslation">
+      <Example>Start a new translation</Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase">start [a] [new] translation</ListenFor>
+      <ListenFor RequireAppName="ExplicitlySpecified">start [a] [new] {builtin:AppName} translation</ListenFor>
+      <Feedback>Starting a new translation</Feedback>
+      <Navigate />
+    </Command>
+  </CommandSet>
+  
+  <CommandSet xml:lang="fr-fr" Name="ModernWordReferenceCommandSet_fr-fr">
+    <AppName>WordReference</AppName>
+    <Example>Démarrer une nouvelle traduction</Example>
+
+    <Command Name="startNewTranslation">
+      <Example>Démarrer une nouvelle traduction</Example>
+      <ListenFor RequireAppName="BeforeOrAfterPhrase">Démarrer [une] [nouvelle] traduction</ListenFor>
+      <ListenFor RequireAppName="ExplicitlySpecified">Démarrer [une] [nouvelle] traduction {builtin:AppName}</ListenFor>
+      <Feedback>Nouvelle traduction demandée</Feedback>
+      <Navigate />
+    </Command>
+  </CommandSet>
+</VoiceCommands>
