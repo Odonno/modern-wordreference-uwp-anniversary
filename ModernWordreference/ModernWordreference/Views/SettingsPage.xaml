@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     DataContext="{Binding Settings, Source={StaticResource ViewModelLocator}}">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <StackPanel Margin="10 0" Orientation="Vertical">
             <!-- Title -->
             <TextBlock x:Uid="/UIResources/SettingsPageTitle" x:Name="PageTitle" 
@@ -75,5 +75,5 @@
                           OnContent="Drop Shadow enabled"
                           OffContent="Drop Shadow disabled" />
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </Page>
