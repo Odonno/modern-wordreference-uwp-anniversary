@@ -117,14 +117,42 @@ namespace ModernWordreference.Views
 
         private async Task ShowNewTranslationControlAsync()
         {
-            await ContentGrid.Blur(10f).StartAsync();
-            await NewTranslationControl.Fade(1).StartAsync();
+            var localStorageService = ServiceLocator.Current.GetInstance<ILocalStorageService>();
+            bool showNewTranslationWidgetOnMainPage = localStorageService.Read(StorageConstants.ShowNewTranslationWidgetOnMainPage, false);
+
+            if (showNewTranslationWidgetOnMainPage)
+            {
+                NewTranslationWidgetGrid.Visibility = Visibility.Visible;
+                await NewTranslationWidgetGrid.Scale(1, 1).StartAsync();
+            }
+            else
+            {
+                await ContentGrid.Blur(10f).StartAsync();
+                await NewTranslationControl.Fade(1).StartAsync();
+            }
         }
 
         private async Task HideNewTranslationControlAsync()
         {
-            await ContentGrid.Blur(0f).StartAsync();
-            await NewTranslationControl.Fade().StartAsync();
+            var localStorageService = ServiceLocator.Current.GetInstance<ILocalStorageService>();
+            bool showNewTranslationWidgetOnMainPage = localStorageService.Read(StorageConstants.ShowNewTranslationWidgetOnMainPage, false);
+
+            if (showNewTranslationWidgetOnMainPage)
+            {
+                await NewTranslationWidgetGrid.Scale(1, 0).StartAsync().ContinueWith(async _ =>
+                {
+                    await CoreApplication.MainView.CoreWindow.Dispatcher
+                        .RunAsync(CoreDispatcherPriority.High, () =>
+                        {
+                            NewTranslationWidgetGrid.Visibility = Visibility.Collapsed;
+                        });
+                });
+            }
+            else
+            {
+                await ContentGrid.Blur(0f).StartAsync();
+                await NewTranslationControl.Fade().StartAsync();
+            }
         }
 
         private void CreateDropShadowOnTranslationInfosGrid()

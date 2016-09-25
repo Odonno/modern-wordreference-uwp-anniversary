@@ -45,6 +45,9 @@
                     <VisualState.Setters>
                         <Setter Target="NewTranslationControl.Width" Value="400" />
                         <Setter Target="NewTranslationControl.Height" Value="270" />
+                        
+                        <Setter Target="NewTranslationControl2.Width" Value="400" />
+                        <Setter Target="NewTranslationControl2.Height" Value="270" />
                     </VisualState.Setters>
 
                     <VisualState.StateTriggers>
@@ -56,6 +59,9 @@
                     <VisualState.Setters>
                         <Setter Target="NewTranslationControl.Width" Value="300" />
                         <Setter Target="NewTranslationControl.Height" Value="250" />
+                        
+                        <Setter Target="NewTranslationControl2.Width" Value="300" />
+                        <Setter Target="NewTranslationControl2.Height" Value="250" />
                     </VisualState.Setters>
 
                     <VisualState.StateTriggers>
@@ -93,6 +99,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -123,8 +130,18 @@
                     </ListView>
                 </Grid>
 
+                <!-- New translation widget -->
+                <Grid x:Name="NewTranslationWidgetGrid" Grid.Row="1" 
+                      Visibility="Collapsed"
+                      Background="{ThemeResource ContentDialogBackground}">
+                    <!-- New translation control -->
+                    <userControls:NewTranslationControl x:Name="NewTranslationControl2"
+                                                        ShowBorderBrush="False" ShowHideButton="True"
+                                                        HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Grid>
+
                 <!-- Translation infos -->
-                <Grid x:Name="TranslationInfosGrid" Grid.Row="1">
+                <Grid x:Name="TranslationInfosGrid" Grid.Row="2">
                     <Grid x:Name="TranslationInfosSubGrid">
                         <Rectangle x:Name="TranslationInfosShape" 
                                    Fill="{ThemeResource TranslationInfosBackgroundBrush}" />
@@ -150,7 +167,7 @@
                 </Grid>
 
                 <!-- Translation results -->
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="3">
                     <ListView SelectionMode="None"
                               ItemsSource="{Binding Source={StaticResource TranslationResultSource}}"
                               ItemTemplate="{StaticResource TranslationResultItemTemplate}"
@@ -184,6 +201,7 @@
             <userControls:NewTranslationControl x:Name="NewTranslationControl"
                                                 HorizontalAlignment="Center" VerticalAlignment="Center"
                                                 Opacity="0"
+                                                ShowBorderBrush="True" ShowHideButton="False"
                                                 Visibility="{x:Bind ViewModel.ShowNewTranslationControl, Mode=OneWay}" />
         </Grid>
     </Grid>

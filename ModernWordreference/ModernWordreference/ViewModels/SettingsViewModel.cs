@@ -45,13 +45,20 @@ namespace ModernWordreference.ViewModels
             set { _invertSuggestions = value; SaveInvertSuggestions(); }
         }
 
+        private bool _showNewTranslationWidgetOnMainPage;
+        public bool ShowNewTranslationWidgetOnMainPage
+        {
+            get { return _showNewTranslationWidgetOnMainPage; }
+            set { _showNewTranslationWidgetOnMainPage = value; SaveShowNewTranslationWidgetOnMainPage(); }
+        }       
+
         private bool _enableDropShadow;
         public bool EnableDropShadow
         {
             get { return _enableDropShadow; }
             set { _enableDropShadow = value; SaveEnableDropShadow(); }
         }
-               
+
         #endregion
 
         #region Constructor
@@ -63,12 +70,32 @@ namespace ModernWordreference.ViewModels
 
             SelectedTheme = _localStorageService.Read(StorageConstants.SelectedTheme, "System (Dark/Light)");
             InvertSuggestions = _localStorageService.Read(StorageConstants.InvertSuggestions, false);
+            ShowNewTranslationWidgetOnMainPage = _localStorageService.Read(StorageConstants.ShowNewTranslationWidgetOnMainPage, false);
             EnableDropShadow = _localStorageService.Read(StorageConstants.EnableDropShadow, false);
         }
 
         #endregion
 
         #region Private methods
+
+        private void SaveInvertSuggestions()
+        {
+            _localStorageService.Save(StorageConstants.InvertSuggestions, InvertSuggestions);
+        }
+
+        private void SaveShowNewTranslationWidgetOnMainPage()
+        {
+            _localStorageService.Save(StorageConstants.ShowNewTranslationWidgetOnMainPage, ShowNewTranslationWidgetOnMainPage);
+        }
+
+        private void SaveEnableDropShadow()
+        {
+            _localStorageService.Save(StorageConstants.EnableDropShadow, EnableDropShadow);
+        }
+
+        #endregion
+
+        #region Public methods
 
         public void SaveSelectedTheme(object sender, SelectionChangedEventArgs e)
         {
@@ -95,16 +122,6 @@ namespace ModernWordreference.ViewModels
 
                 Messenger.Default.Send(new HistoryRemovedMessage());
             }
-        }
-
-        public void SaveInvertSuggestions()
-        {
-            _localStorageService.Save(StorageConstants.InvertSuggestions, InvertSuggestions);
-        }
-
-        private void SaveEnableDropShadow()
-        {
-            _localStorageService.Save(StorageConstants.EnableDropShadow, EnableDropShadow);
         }
 
         #endregion

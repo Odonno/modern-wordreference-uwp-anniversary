@@ -47,10 +47,22 @@
                           OnContent="Suggestions inverted"
                           OffContent="Suggestions in default order" />
 
+            <!-- Widgets part -->
+            <TextBlock x:Uid="/UIResources/WidgetsSubTitle" Text="Widgets" Margin="0 10 0 0"
+                       FontWeight="Bold" />
+
+            <TextBlock x:Uid="/UIResources/NewTranslationWidgetText" Margin="0 10 0 0"
+                       Text="New translation widget"
+                       TextWrapping="Wrap" FontStyle="Italic" />
+            <ToggleSwitch x:Uid="/UIResources/NewTranslationWidgetToggleSwitch"
+                          IsOn="{x:Bind ViewModel.ShowNewTranslationWidgetOnMainPage, Mode=TwoWay}" 
+                          OnContent="Show on Main page"
+                          OffContent="Show as popup" />
+
             <!-- Animations part -->
             <TextBlock x:Uid="/UIResources/AnimationsSubTitle" Text="Animations" Margin="0 10 0 0"
                        FontWeight="Bold" />
-            
+
             <TextBlock x:Uid="/UIResources/DueToPerformanceText"
                        Text="Due to performance issues, a restart is necessary to take animations into effect."
                        TextWrapping="Wrap" />

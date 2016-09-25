@@ -30,6 +30,7 @@ namespace ModernWordreference.ViewModels
         private INavigationService _navigationService;
         private IApiService _apiService;
         private IDictionaryService _dictionaryService;
+        private ILocalStorageService _localStorageService;
         private IRoamingStorageService _roamingStorageService;
         private IAnalyticsService _analyticsService;
         private INetworkService _networkService;
@@ -95,11 +96,12 @@ namespace ModernWordreference.ViewModels
 
         #region Constructor
 
-        public MainViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, IRoamingStorageService roamingStorageService, IAnalyticsService analyticsService, INetworkService networkService)
+        public MainViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, ILocalStorageService localStorageService, IRoamingStorageService roamingStorageService, IAnalyticsService analyticsService, INetworkService networkService)
         {
             _navigationService = navigationService;
             _apiService = apiService;
             _dictionaryService = dictionaryService;
+            _localStorageService = localStorageService;
             _roamingStorageService = roamingStorageService;
             _analyticsService = analyticsService;
             _networkService = networkService;
@@ -295,10 +297,19 @@ namespace ModernWordreference.ViewModels
             Messenger.Default.Send(new ShowNewTranslationControlMessage());
         }
 
+        public void HideNewTranslation()
+        {
+            ShowNewTranslationControl = false;
+            RaisePropertyChanged(nameof(ShowNewTranslationControl));
+        }
+
         public void TapOnPage()
         {
-            if (!_clickOnCard)
+            bool showNewTranslationWidgetOnMainPage = _localStorageService.Read(StorageConstants.ShowNewTranslationWidgetOnMainPage, false);
+            if (!showNewTranslationWidgetOnMainPage && !_clickOnCard)
+            {
                 ShowNewTranslationControl = false;
+            }
         }
 
         #endregion

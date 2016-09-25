@@ -39,6 +39,11 @@ namespace ModernWordreference.Constants
         public static string InvertSuggestions = "invertSuggestions";
 
         /// <summary>
+        /// Save / Retrieve if 'new translation' widget is on main page (or as a popup otherwise)
+        /// </summary>
+        public static string ShowNewTranslationWidgetOnMainPage = "showNewTranslationWidgetOnMainPage";
+
+        /// <summary>
         /// Save / Retrieve if drop shadow is enabled or disabled
         /// </summary>
         public static string EnableDropShadow = "enableDropShadow";

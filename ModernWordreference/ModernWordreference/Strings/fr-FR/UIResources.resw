@@ -228,4 +228,16 @@
   <data name="DueToPerformanceText.Text" xml:space="preserve">
     <value>A cause de problèmes de performance, l'application doît être redémarrée pour que les changements soient appliqués.</value>
   </data>
+  <data name="NewTranslationWidgetText" xml:space="preserve">
+    <value>Widget - nouvelle traduction</value>
+  </data>
+  <data name="NewTranslationWidgetToggleSwitch.OffContent" xml:space="preserve">
+    <value>Afficher sous forme de fenêtre</value>
+  </data>
+  <data name="NewTranslationWidgetToggleSwitch.OnContent" xml:space="preserve">
+    <value>Afficher sur la page de démarrage</value>
+  </data>
+  <data name="WidgetsSubTitle.Text" xml:space="preserve">
+    <value>Widgets</value>
+  </data>
 </root>

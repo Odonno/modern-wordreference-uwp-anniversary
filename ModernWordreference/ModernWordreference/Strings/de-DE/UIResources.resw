@@ -228,4 +228,16 @@
   <data name="DueToPerformanceText.Text" xml:space="preserve">
     <value>Due to performance issues, a restart is necessary to take animations into effect.</value>
   </data>
+  <data name="NewTranslationWidgetText" xml:space="preserve">
+    <value>New translation widget</value>
+  </data>
+  <data name="NewTranslationWidgetToggleSwitch.OffContent" xml:space="preserve">
+    <value>Show as popup</value>
+  </data>
+  <data name="NewTranslationWidgetToggleSwitch.OnContent" xml:space="preserve">
+    <value>Show on Main page</value>
+  </data>
+  <data name="WidgetsSubTitle.Text" xml:space="preserve">
+    <value>Widgets</value>
+  </data>
 </root>
