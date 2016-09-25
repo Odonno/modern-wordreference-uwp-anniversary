@@ -213,4 +213,19 @@
   <data name="SuggestionsToggleSwitch.OnContent" xml:space="preserve">
     <value>Suggestions inverted</value>
   </data>
+  <data name="AnimationsSubTitle.Text" xml:space="preserve">
+    <value>Animations</value>
+  </data>
+  <data name="BeCarefulDropShadowText.Text" xml:space="preserve">
+    <value>Be careful ! You can experience troubles if you enable Drop Shadow effect.</value>
+  </data>
+  <data name="DropShadowToggleSwitch.OffContent" xml:space="preserve">
+    <value>Drop Shadow disabled</value>
+  </data>
+  <data name="DropShadowToggleSwitch.OnContent" xml:space="preserve">
+    <value>Drop Shadow enabled</value>
+  </data>
+  <data name="DueToPerformanceText.Text" xml:space="preserve">
+    <value>Due to performance issues, a restart is necessary to take animations into effect.</value>
+  </data>
 </root>

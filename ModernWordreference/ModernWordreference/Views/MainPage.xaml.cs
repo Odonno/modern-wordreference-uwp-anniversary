@@ -1,5 +1,8 @@
-﻿using Microsoft.Toolkit.Uwp.UI.Animations;
+﻿using Microsoft.Practices.ServiceLocation;
+using Microsoft.Toolkit.Uwp.UI.Animations;
+using ModernWordreference.Constants;
 using ModernWordreference.Infrastructure;
+using ModernWordreference.Services;
 using ModernWordreference.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -68,8 +71,13 @@ namespace ModernWordreference.Views
             {
                 if (!_initialized)
                 {
-                    // Add animations
-                    CreateDropShadowOnTranslationInfosGrid();
+                    var localStorageService = ServiceLocator.Current.GetInstance<ILocalStorageService>();
+                    bool enableDropShadow = localStorageService.Read(StorageConstants.EnableDropShadow, false);
+                    if (enableDropShadow)
+                    {
+                        // Add animations
+                        CreateDropShadowOnTranslationInfosGrid();
+                    }
                 }
 
                 _initialized = true;

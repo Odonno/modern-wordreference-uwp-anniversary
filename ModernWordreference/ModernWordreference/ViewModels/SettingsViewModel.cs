@@ -45,6 +45,13 @@ namespace ModernWordreference.ViewModels
             set { _invertSuggestions = value; SaveInvertSuggestions(); }
         }
 
+        private bool _enableDropShadow;
+        public bool EnableDropShadow
+        {
+            get { return _enableDropShadow; }
+            set { _enableDropShadow = value; SaveEnableDropShadow(); }
+        }
+               
         #endregion
 
         #region Constructor
@@ -56,6 +63,7 @@ namespace ModernWordreference.ViewModels
 
             SelectedTheme = _localStorageService.Read(StorageConstants.SelectedTheme, "System (Dark/Light)");
             InvertSuggestions = _localStorageService.Read(StorageConstants.InvertSuggestions, false);
+            EnableDropShadow = _localStorageService.Read(StorageConstants.EnableDropShadow, false);
         }
 
         #endregion
@@ -92,6 +100,11 @@ namespace ModernWordreference.ViewModels
         public void SaveInvertSuggestions()
         {
             _localStorageService.Save(StorageConstants.InvertSuggestions, InvertSuggestions);
+        }
+
+        private void SaveEnableDropShadow()
+        {
+            _localStorageService.Save(StorageConstants.EnableDropShadow, EnableDropShadow);
         }
 
         #endregion

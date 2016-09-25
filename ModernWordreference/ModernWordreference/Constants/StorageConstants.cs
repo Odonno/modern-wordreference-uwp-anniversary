@@ -37,5 +37,10 @@ namespace ModernWordreference.Constants
         /// Save / Retrieve if user invert suggestions
         /// </summary>
         public static string InvertSuggestions = "invertSuggestions";
+
+        /// <summary>
+        /// Save / Retrieve if drop shadow is enabled or disabled
+        /// </summary>
+        public static string EnableDropShadow = "enableDropShadow";
     }
 }
