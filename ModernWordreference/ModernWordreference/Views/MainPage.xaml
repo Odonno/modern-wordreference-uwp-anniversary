@@ -57,10 +57,10 @@
 
                 <VisualState x:Name="Mobile">
                     <VisualState.Setters>
-                        <Setter Target="NewTranslationControl.Width" Value="300" />
+                        <Setter Target="NewTranslationControl.Width" Value="320" />
                         <Setter Target="NewTranslationControl.Height" Value="250" />
                         
-                        <Setter Target="NewTranslationControl2.Width" Value="300" />
+                        <Setter Target="NewTranslationControl2.Width" Value="320" />
                         <Setter Target="NewTranslationControl2.Height" Value="250" />
                     </VisualState.Setters>
 
@@ -136,7 +136,7 @@
                       Background="{ThemeResource ContentDialogBackground}">
                     <!-- New translation control -->
                     <userControls:NewTranslationControl x:Name="NewTranslationControl2"
-                                                        ShowBorderBrush="False" ShowHideButton="True"
+                                                        ShowBackground="False" ShowBorderBrush="False" ShowHideButton="True"
                                                         HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Grid>
 
@@ -198,11 +198,13 @@
                           Source="{x:Bind ViewModel.CurrentAudioSource, Mode=OneWay}" />
 
             <!-- New translation control -->
-            <userControls:NewTranslationControl x:Name="NewTranslationControl"
-                                                HorizontalAlignment="Center" VerticalAlignment="Center"
-                                                Opacity="0"
-                                                ShowBorderBrush="True" ShowHideButton="False"
-                                                Visibility="{x:Bind ViewModel.ShowNewTranslationControl, Mode=OneWay}" />
+            <Grid Visibility="{x:Bind ViewModel.HideNewTranslationWidgetOnMainPage, Mode=OneWay}">
+                <userControls:NewTranslationControl x:Name="NewTranslationControl"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    Opacity="0"
+                                                    ShowBackground="True" ShowBorderBrush="True" ShowHideButton="False"
+                                                    Visibility="{x:Bind ViewModel.ShowNewTranslationControl, Mode=OneWay}" />
+            </Grid>
         </Grid>
     </Grid>
 

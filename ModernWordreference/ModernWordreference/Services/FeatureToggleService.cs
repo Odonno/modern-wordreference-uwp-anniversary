@@ -1,4 +1,5 @@
 ﻿using Microsoft.Services.Store.Engagement;
+using ModernWordreference.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,20 @@ namespace ModernWordreference.Services
         bool UseFeedbackHubApp();
         bool IsRunningWindowsMobile();
         bool LoadAllTranslations();
+        bool ShowNewTranslationWidgetOnMainPage();
     }
 
     public class FeatureToggleService : IFeatureToggleService
     {
+        private ILocalStorageService _localStorageService;
+        private IRoamingStorageService _roamingStorageService;
+
+        public FeatureToggleService(ILocalStorageService localStorageService, IRoamingStorageService roamingStorageService)
+        {
+            _localStorageService = localStorageService;
+            _roamingStorageService = roamingStorageService;
+        }
+
         // Deployment Toggles
         public bool IsNotificationBackgroundTasksEnabled()
         {
@@ -43,6 +54,15 @@ namespace ModernWordreference.Services
         // Permission Toggles
 
         // User settings Toggles
+        public bool ShowNewTranslationWidgetOnMainPage()
+        {
+            bool showNewTranslationWidgetOnMainPage = _localStorageService.Read(StorageConstants.ShowNewTranslationWidgetOnMainPage, false);
+
+            var translationSummaries = _roamingStorageService.Read<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
+            bool hasNoTranslation = translationSummaries == null;
+
+            return showNewTranslationWidgetOnMainPage && !hasNoTranslation;
+        }
 
         // Experiment Toggles
     }

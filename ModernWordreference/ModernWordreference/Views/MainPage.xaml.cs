@@ -117,13 +117,10 @@ namespace ModernWordreference.Views
 
         private async Task ShowNewTranslationControlAsync()
         {
-            var localStorageService = ServiceLocator.Current.GetInstance<ILocalStorageService>();
-            bool showNewTranslationWidgetOnMainPage = localStorageService.Read(StorageConstants.ShowNewTranslationWidgetOnMainPage, false);
-
-            if (showNewTranslationWidgetOnMainPage)
+            if (ViewModel.ShowNewTranslationWidgetOnMainPage)
             {
                 NewTranslationWidgetGrid.Visibility = Visibility.Visible;
-                await NewTranslationWidgetGrid.Scale(1, 1).StartAsync();
+                await NewTranslationWidgetGrid.Fade(1).StartAsync();
             }
             else
             {
@@ -134,12 +131,9 @@ namespace ModernWordreference.Views
 
         private async Task HideNewTranslationControlAsync()
         {
-            var localStorageService = ServiceLocator.Current.GetInstance<ILocalStorageService>();
-            bool showNewTranslationWidgetOnMainPage = localStorageService.Read(StorageConstants.ShowNewTranslationWidgetOnMainPage, false);
-
-            if (showNewTranslationWidgetOnMainPage)
+            if (ViewModel.ShowNewTranslationWidgetOnMainPage)
             {
-                await NewTranslationWidgetGrid.Scale(1, 0).StartAsync().ContinueWith(async _ =>
+                await NewTranslationWidgetGrid.Fade(0).StartAsync().ContinueWith(async _ =>
                 {
                     await CoreApplication.MainView.CoreWindow.Dispatcher
                         .RunAsync(CoreDispatcherPriority.High, () =>

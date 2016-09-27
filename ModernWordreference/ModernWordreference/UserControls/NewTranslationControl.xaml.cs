@@ -14,6 +14,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -36,6 +37,15 @@ namespace ModernWordreference.UserControls
         #endregion
 
         #region Dependency Properties
+
+        public bool ShowBackground
+        {
+            get { return (bool)GetValue(ShowBackgroundProperty); }
+            set { SetValue(ShowBackgroundProperty, value); }
+        }
+        public static readonly DependencyProperty ShowBackgroundProperty =
+            DependencyProperty.Register("ShowBackground", typeof(bool), typeof(NewTranslationControl), new PropertyMetadata(true));
+
 
         public bool ShowBorderBrush
         {
@@ -90,6 +100,11 @@ namespace ModernWordreference.UserControls
             if (!ShowHideButton)
             {
                 HideButton.Visibility = Visibility.Collapsed;
+            }
+
+            if (!ShowBackground)
+            {
+                RootGrid.Background = new SolidColorBrush(Colors.Transparent);
             }
 
             WordTextBox.Focus(FocusState.Programmatic);

@@ -34,6 +34,7 @@ namespace ModernWordreference.ViewModels
         private IRoamingStorageService _roamingStorageService;
         private IAnalyticsService _analyticsService;
         private INetworkService _networkService;
+        private IFeatureToggleService _featureToggleService;
 
         #endregion
 
@@ -92,11 +93,29 @@ namespace ModernWordreference.ViewModels
             private set { _showNewTranslationControl = value; RaisePropertyChanged(); }
         }
 
+        private bool _showNewTranslationWidgetOnMainPage;
+        public bool ShowNewTranslationWidgetOnMainPage
+        {
+            get { return _showNewTranslationWidgetOnMainPage; }
+            private set { _showNewTranslationWidgetOnMainPage = value; RaisePropertyChanged(); }
+        }
+        public bool HideNewTranslationWidgetOnMainPage
+        {
+            get { return !ShowNewTranslationWidgetOnMainPage; }
+        }
+
         #endregion
 
         #region Constructor
 
-        public MainViewModel(INavigationService navigationService, IApiService apiService, IDictionaryService dictionaryService, ILocalStorageService localStorageService, IRoamingStorageService roamingStorageService, IAnalyticsService analyticsService, INetworkService networkService)
+        public MainViewModel(INavigationService navigationService,
+            IApiService apiService,
+            IDictionaryService dictionaryService,
+            ILocalStorageService localStorageService,
+            IRoamingStorageService roamingStorageService,
+            IAnalyticsService analyticsService,
+            INetworkService networkService,
+            IFeatureToggleService featureToggleService)
         {
             _navigationService = navigationService;
             _apiService = apiService;
@@ -105,6 +124,7 @@ namespace ModernWordreference.ViewModels
             _roamingStorageService = roamingStorageService;
             _analyticsService = analyticsService;
             _networkService = networkService;
+            _featureToggleService = featureToggleService;
 
             InitializeAsync();
 
@@ -287,7 +307,13 @@ namespace ModernWordreference.ViewModels
 
         public async Task StartNewTranslationAsync()
         {
+            if (ShowNewTranslationControl)
+                return;
+
             _clickOnCard = true;
+
+            ShowNewTranslationWidgetOnMainPage = _featureToggleService.ShowNewTranslationWidgetOnMainPage();
+            RaisePropertyChanged(nameof(HideNewTranslationWidgetOnMainPage));
 
             ShowNewTranslationControl = true;
             RaisePropertyChanged(nameof(ShowNewTranslationControl));
@@ -305,8 +331,7 @@ namespace ModernWordreference.ViewModels
 
         public void TapOnPage()
         {
-            bool showNewTranslationWidgetOnMainPage = _localStorageService.Read(StorageConstants.ShowNewTranslationWidgetOnMainPage, false);
-            if (!showNewTranslationWidgetOnMainPage && !_clickOnCard)
+            if (!_clickOnCard && !ShowNewTranslationWidgetOnMainPage)
             {
                 ShowNewTranslationControl = false;
             }
