@@ -30,7 +30,7 @@
             <TextBlock x:Uid="/UIResources/HistorySubTitle" Text="History" Margin="0 10 0 0"
                        FontWeight="Bold" />
 
-            <Button Margin="0 10 0 0" Click="{x:Bind ViewModel.RemoveHistory}">
+            <Button Margin="0 10 0 0" Click="{x:Bind ViewModel.RemoveHistoryAsync}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;"
                                VerticalAlignment="Center" />

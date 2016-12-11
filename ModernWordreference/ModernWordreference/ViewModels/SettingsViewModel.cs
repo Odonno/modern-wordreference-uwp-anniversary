@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 
 namespace ModernWordreference.ViewModels
@@ -15,6 +17,8 @@ namespace ModernWordreference.ViewModels
     public class SettingsViewModel : ViewModelBase
     {
         #region Fields
+
+        private readonly ResourceLoader _resourceLoader = ResourceLoader.GetForCurrentView("Resources");
 
         private ILocalStorageService _localStorageService;
         private IRoamingStorageService _roamingStorageService;
@@ -107,11 +111,12 @@ namespace ModernWordreference.ViewModels
             }
         }
 
-        public void RemoveHistory()
+        public async Task RemoveHistoryAsync()
         {
             var translationSummaries = _roamingStorageService.Read<List<Models.TranslationSummary>>(StorageConstants.TranslationSummaries);
             if (translationSummaries != null)
             {
+                // Set "Removed" property on each translation summary
                 var historyTranslations = translationSummaries.OrderByDescending(ts => ts.SearchedDate).Skip(1);
                 foreach (var translationSummary in historyTranslations)
                 {
@@ -121,6 +126,11 @@ namespace ModernWordreference.ViewModels
                 _roamingStorageService.Save(StorageConstants.TranslationSummaries, translationSummaries);
 
                 Messenger.Default.Send(new HistoryRemovedMessage());
+
+                // Show message
+                var dialog = new MessageDialog(_resourceLoader.GetString("HistoryHasBeenRemoved"));
+                dialog.Commands.Add(new UICommand(_resourceLoader.GetString("Ok")) { Id = 0 });
+                await dialog.ShowAsync();
             }
         }
 

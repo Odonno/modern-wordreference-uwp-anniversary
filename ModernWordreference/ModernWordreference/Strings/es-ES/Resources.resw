@@ -126,8 +126,14 @@
   <data name="CompoundForms" xml:space="preserve">
     <value>Formas compuestas</value>
   </data>
+  <data name="HistoryHasBeenRemoved" xml:space="preserve">
+    <value>History has been removed.</value>
+  </data>
   <data name="KeyboardRequired" xml:space="preserve">
     <value>Necesitarás un teclado específico ({0} teclado) si quieres hacer algunas traducciones.</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
   </data>
   <data name="PrimaryTranslations" xml:space="preserve">
     <value>Traducciones principales</value>
