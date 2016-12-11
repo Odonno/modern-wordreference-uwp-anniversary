@@ -110,6 +110,13 @@ namespace ModernWordreference.ViewModels
             private set { _historyShowed = value; RaisePropertyChanged(); }
         }
 
+        private bool _instantTranslation;
+        public bool InstantTranslation
+        {
+            get { return _instantTranslation; }
+            private set { _instantTranslation = value; RaisePropertyChanged(); }
+        }
+
         #endregion
 
         #region Constructor
@@ -158,12 +165,16 @@ namespace ModernWordreference.ViewModels
         {
             // Retrieve settings
             HistoryShowed = _localStorageService.Read(StorageConstants.HistoryShowed, true);
+            InstantTranslation = _localStorageService.Read(StorageConstants.InstantTranslation, true);
 
             // Handle network connection
             HandleNetworkConnection();
 
             // Create TranslationsCardItems list
             await CreateTranslationCardsAsync();
+
+            if (InstantTranslation)
+                await StartNewTranslationAsync();
         }
 
         private async Task CreateTranslationCardsAsync()

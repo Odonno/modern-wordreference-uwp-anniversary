@@ -52,5 +52,10 @@ namespace ModernWordreference.Constants
         /// Save / Retrieve if history is shozed or hidden
         /// </summary>
         public static string HistoryShowed = "historyShowed";
+
+        /// <summary>
+        /// Save / Retrieve if new translation widget is showed/hidden at first launch
+        /// </summary>
+        public static string InstantTranslation = "instantTranslation";
     }
 }

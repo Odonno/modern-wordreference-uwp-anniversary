@@ -249,4 +249,10 @@
   <data name="ProgressTextBox.Text" xml:space="preserve">
     <value>We are searching the best translation.</value>
   </data>
+  <data name="InstantTranslationToggleSwitch.OffContent" xml:space="preserve">
+    <value>Hide at first launch</value>
+  </data>
+  <data name="InstantTranslationToggleSwitch.OnContent" xml:space="preserve">
+    <value>Show at first launch</value>
+  </data>
 </root>

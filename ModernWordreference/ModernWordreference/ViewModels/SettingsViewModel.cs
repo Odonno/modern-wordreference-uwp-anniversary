@@ -70,6 +70,13 @@ namespace ModernWordreference.ViewModels
             set { _historyShowed = value; SaveHistoryShowed(); }
         }
 
+        private bool _instantTranslation;
+        public bool InstantTranslation
+        {
+            get { return _instantTranslation; }
+            set { _instantTranslation = value; SaveInstantTranslation(); }
+        }      
+
         #endregion
 
         #region Constructor
@@ -84,6 +91,7 @@ namespace ModernWordreference.ViewModels
             ShowNewTranslationWidgetOnMainPage = _localStorageService.Read(StorageConstants.ShowNewTranslationWidgetOnMainPage, false);
             EnableDropShadow = _localStorageService.Read(StorageConstants.EnableDropShadow, false);
             HistoryShowed = _localStorageService.Read(StorageConstants.HistoryShowed, true);
+            InstantTranslation = _localStorageService.Read(StorageConstants.InstantTranslation, true);
         }
 
         #endregion
@@ -109,6 +117,11 @@ namespace ModernWordreference.ViewModels
         {
             _localStorageService.Save(StorageConstants.HistoryShowed, HistoryShowed);
             Messenger.Default.Send(new HistoryToggleMessage());
+        }
+
+        private void SaveInstantTranslation()
+        {
+            _localStorageService.Save(StorageConstants.InstantTranslation, InstantTranslation);
         }
 
         #endregion

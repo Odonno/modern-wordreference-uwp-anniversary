@@ -59,10 +59,16 @@
             <TextBlock x:Uid="/UIResources/NewTranslationWidgetText" Margin="0 10 0 0"
                        Text="New translation widget"
                        TextWrapping="Wrap" FontStyle="Italic" />
+            
             <ToggleSwitch x:Uid="/UIResources/NewTranslationWidgetToggleSwitch"
                           IsOn="{x:Bind ViewModel.ShowNewTranslationWidgetOnMainPage, Mode=TwoWay}" 
                           OnContent="Show on Main page"
                           OffContent="Show as popup" />
+            
+            <ToggleSwitch x:Uid="/UIResources/InstantTranslationToggleSwitch" Margin="0 10 0 0"
+                          IsOn="{x:Bind ViewModel.InstantTranslation, Mode=TwoWay}" 
+                          OnContent="Show at first launch"
+                          OffContent="Hide at first launch" />
 
             <!-- Animations part -->
             <TextBlock x:Uid="/UIResources/AnimationsSubTitle" Text="Animations" Margin="0 10 0 0"
