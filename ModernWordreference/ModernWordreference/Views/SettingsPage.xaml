@@ -29,6 +29,11 @@
             <!-- History part -->
             <TextBlock x:Uid="/UIResources/HistorySubTitle" Text="History" Margin="0 10 0 0"
                        FontWeight="Bold" />
+            
+            <ToggleSwitch x:Uid="/UIResources/HistoryToggleSwitch" Margin="0 10 0 0"
+                          IsOn="{x:Bind ViewModel.HistoryShowed, Mode=TwoWay}" 
+                          OnContent="History visible"
+                          OffContent="History hidden" />
 
             <Button Margin="0 10 0 0" Click="{x:Bind ViewModel.RemoveHistoryAsync}">
                 <StackPanel Orientation="Horizontal">

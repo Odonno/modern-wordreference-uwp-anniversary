@@ -45,7 +45,7 @@
                     <VisualState.Setters>
                         <Setter Target="NewTranslationControl.Width" Value="400" />
                         <Setter Target="NewTranslationControl.Height" Value="270" />
-                        
+
                         <Setter Target="NewTranslationControl2.Width" Value="400" />
                         <Setter Target="NewTranslationControl2.Height" Value="270" />
                     </VisualState.Setters>
@@ -59,7 +59,7 @@
                     <VisualState.Setters>
                         <Setter Target="NewTranslationControl.Width" Value="320" />
                         <Setter Target="NewTranslationControl.Height" Value="250" />
-                        
+
                         <Setter Target="NewTranslationControl2.Width" Value="320" />
                         <Setter Target="NewTranslationControl2.Height" Value="250" />
                     </VisualState.Setters>
@@ -72,7 +72,8 @@
         </VisualStateManager.VisualStateGroups>
 
         <Grid x:Name="ContentGrid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Tapped="{x:Bind ViewModel.TapOnPage}">
-            <Grid x:Name="NoPreviousTranslationGrid" Visibility="{x:Bind ViewModel.ShowNoPreviousTranslationGrid, Mode=OneWay}">
+            <Grid x:Name="NoPreviousTranslationGrid" 
+                  Visibility="{x:Bind ViewModel.ShowNoPreviousTranslationGrid, Mode=OneWay}">
                 <StackPanel x:Name="NoTranslationPanel" Margin="20 0"
                             VerticalAlignment="Center" HorizontalAlignment="Center">
                     <TextBlock x:Uid="/UIResources/StartTranslationText" 
@@ -95,7 +96,8 @@
                 </StackPanel>
             </Grid>
 
-            <Grid x:Name="WithPreviousTranslationGrid" Visibility="{x:Bind ViewModel.ShowWithPreviousTranslationGrid, Mode=OneWay}">
+            <Grid x:Name="WithPreviousTranslationGrid" 
+                  Visibility="{x:Bind ViewModel.ShowWithPreviousTranslationGrid, Mode=OneWay}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -106,28 +108,30 @@
                 <!-- List of all translations -->
                 <Grid x:Name="AllTranslationsGrid" Grid.Row="0" 
                       Visibility="{x:Bind ViewModel.HasNetwork, Mode=OneWay}">
-                    <ListView x:Name="TranslationsCardsList"
-                              SelectionMode="None"
-                              HorizontalAlignment="Stretch"
-                              Height="50"
-                              ItemsSource="{x:Bind ViewModel.TranslationsCardItems, Mode=OneWay}"
-                              ItemTemplateSelector="{StaticResource TranslationCardsTemplateSelector}"
-                              ItemClick="{x:Bind ViewModel.ClickOnCard}" IsItemClickEnabled="True"
-                              ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.IsVerticalRailEnabled="False"
-                              ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.IsHorizontalRailEnabled="True">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsStackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
+                    <Grid Visibility="{x:Bind ViewModel.HistoryShowed, Mode=OneWay}">
+                        <ListView x:Name="TranslationsCardsList"
+                                  SelectionMode="None"
+                                  HorizontalAlignment="Stretch"
+                                  Height="50"
+                                  ItemsSource="{x:Bind ViewModel.TranslationsCardItems, Mode=OneWay}"
+                                  ItemTemplateSelector="{StaticResource TranslationCardsTemplateSelector}"
+                                  ItemClick="{x:Bind ViewModel.ClickOnCard}" IsItemClickEnabled="True"
+                                  ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollMode="Disabled" ScrollViewer.IsVerticalRailEnabled="False"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.IsHorizontalRailEnabled="True">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsStackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
 
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Padding" Value="0" />
-                                <Setter Property="Margin" Value="0" />
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                    </ListView>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="Margin" Value="0" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </Grid>
                 </Grid>
 
                 <!-- New translation widget -->

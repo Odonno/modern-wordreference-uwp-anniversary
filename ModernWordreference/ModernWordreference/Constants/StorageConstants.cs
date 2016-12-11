@@ -47,5 +47,10 @@ namespace ModernWordreference.Constants
         /// Save / Retrieve if drop shadow is enabled or disabled
         /// </summary>
         public static string EnableDropShadow = "enableDropShadow";
+
+        /// <summary>
+        /// Save / Retrieve if history is shozed or hidden
+        /// </summary>
+        public static string HistoryShowed = "historyShowed";
     }
 }

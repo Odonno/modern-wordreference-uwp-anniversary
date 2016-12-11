@@ -54,13 +54,20 @@ namespace ModernWordreference.ViewModels
         {
             get { return _showNewTranslationWidgetOnMainPage; }
             set { _showNewTranslationWidgetOnMainPage = value; SaveShowNewTranslationWidgetOnMainPage(); }
-        }       
+        }
 
         private bool _enableDropShadow;
         public bool EnableDropShadow
         {
             get { return _enableDropShadow; }
             set { _enableDropShadow = value; SaveEnableDropShadow(); }
+        }
+
+        private bool _historyShowed;
+        public bool HistoryShowed
+        {
+            get { return _historyShowed; }
+            set { _historyShowed = value; SaveHistoryShowed(); }
         }
 
         #endregion
@@ -72,10 +79,11 @@ namespace ModernWordreference.ViewModels
             _localStorageService = localStorageService;
             _roamingStorageService = roamingStorageService;
 
-            SelectedTheme = _localStorageService.Read(StorageConstants.SelectedTheme, "System (Dark/Light)");
+            SelectedTheme = _localStorageService.Read(StorageConstants.SelectedTheme, Themes.First());
             InvertSuggestions = _localStorageService.Read(StorageConstants.InvertSuggestions, false);
             ShowNewTranslationWidgetOnMainPage = _localStorageService.Read(StorageConstants.ShowNewTranslationWidgetOnMainPage, false);
             EnableDropShadow = _localStorageService.Read(StorageConstants.EnableDropShadow, false);
+            HistoryShowed = _localStorageService.Read(StorageConstants.HistoryShowed, true);
         }
 
         #endregion
@@ -95,6 +103,12 @@ namespace ModernWordreference.ViewModels
         private void SaveEnableDropShadow()
         {
             _localStorageService.Save(StorageConstants.EnableDropShadow, EnableDropShadow);
+        }
+
+        private void SaveHistoryShowed()
+        {
+            _localStorageService.Save(StorageConstants.HistoryShowed, HistoryShowed);
+            Messenger.Default.Send(new HistoryToggleMessage());
         }
 
         #endregion

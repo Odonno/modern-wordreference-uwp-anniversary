@@ -240,4 +240,10 @@
   <data name="WidgetsSubTitle.Text" xml:space="preserve">
     <value>Widgets</value>
   </data>
+  <data name="HistoryToggleSwitch.OffContent" xml:space="preserve">
+    <value>History hidden</value>
+  </data>
+  <data name="HistoryToggleSwitch.OnContent" xml:space="preserve">
+    <value>History visible</value>
+  </data>
 </root>

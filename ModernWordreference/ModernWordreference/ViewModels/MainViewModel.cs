@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.ApplicationModel.Resources;
@@ -104,6 +103,13 @@ namespace ModernWordreference.ViewModels
             get { return !ShowNewTranslationWidgetOnMainPage; }
         }
 
+        private bool _historyShowed;
+        public bool HistoryShowed
+        {
+            get { return _historyShowed; }
+            private set { _historyShowed = value; RaisePropertyChanged(); }
+        }
+
         #endregion
 
         #region Constructor
@@ -137,6 +143,11 @@ namespace ModernWordreference.ViewModels
             {
                 await CreateTranslationCardsAsync();
             });
+
+            Messenger.Default.Register<HistoryToggleMessage>(this, (message) =>
+            {
+                HistoryShowed = _localStorageService.Read(StorageConstants.HistoryShowed, true);
+            });
         }
 
         #endregion
@@ -145,6 +156,9 @@ namespace ModernWordreference.ViewModels
 
         private async void InitializeAsync()
         {
+            // Retrieve settings
+            HistoryShowed = _localStorageService.Read(StorageConstants.HistoryShowed, true);
+
             // Handle network connection
             HandleNetworkConnection();
 
