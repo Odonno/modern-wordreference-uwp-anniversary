@@ -77,6 +77,13 @@ namespace ModernWordreference.ViewModels
             }
         }
 
+        private bool _showProgress = false;
+        public bool ShowProgress
+        {
+            get { return _showProgress; }
+            private set { _showProgress = value; RaisePropertyChanged(); }
+        }
+
         public bool CanExecuteSearch { get { return (!string.IsNullOrWhiteSpace(Word) && Word.Length > 1); } }
 
         public ObservableCollection<Models.Suggestion> Suggestions { get; private set; } = new ObservableCollection<Models.Suggestion>();
@@ -222,6 +229,7 @@ namespace ModernWordreference.ViewModels
             }
 
             // Execute search
+            ShowProgress = true;
             var searchResult = await _apiService.ExecuteSearchAsync(Word, CurrentDictionary);
             if (searchResult == null)
             {
@@ -233,6 +241,8 @@ namespace ModernWordreference.ViewModels
                     { "To", CurrentDictionary.To },
                     { "Word", Word }
                 });
+
+                ShowProgress = false;
 
                 return;
             }
@@ -250,10 +260,12 @@ namespace ModernWordreference.ViewModels
             await _roamingStorageService.SaveFileAsync(StorageConstants.LastTranslation, LastTranslation);
 
             // Send result to other ViewModels
-            Messenger.Default.Send<NewTranslationMessage>(new NewTranslationMessage
+            Messenger.Default.Send(new NewTranslationMessage
             {
                 Translation = searchResult
             });
+
+            ShowProgress = false;
 
             // Send telemetry
             var properties = new Dictionary<string, string> {

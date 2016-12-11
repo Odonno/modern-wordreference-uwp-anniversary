@@ -44,8 +44,7 @@ namespace ModernWordreference.UserControls
             set { SetValue(ShowBackgroundProperty, value); }
         }
         public static readonly DependencyProperty ShowBackgroundProperty =
-            DependencyProperty.Register("ShowBackground", typeof(bool), typeof(NewTranslationControl), new PropertyMetadata(true));
-
+            DependencyProperty.Register(nameof(ShowBackground), typeof(bool), typeof(NewTranslationControl), new PropertyMetadata(true));
 
         public bool ShowBorderBrush
         {
@@ -53,7 +52,7 @@ namespace ModernWordreference.UserControls
             set { SetValue(ShowBorderBrushProperty, value); }
         }
         public static readonly DependencyProperty ShowBorderBrushProperty =
-            DependencyProperty.Register("ShowBorderBrush", typeof(bool), typeof(NewTranslationControl), new PropertyMetadata(true));
+            DependencyProperty.Register(nameof(ShowBorderBrush), typeof(bool), typeof(NewTranslationControl), new PropertyMetadata(true));
 
         public bool ShowHideButton
         {
@@ -61,7 +60,7 @@ namespace ModernWordreference.UserControls
             set { SetValue(ShowHideButtonProperty, value); }
         }
         public static readonly DependencyProperty ShowHideButtonProperty =
-            DependencyProperty.Register("ShowHideButton", typeof(bool), typeof(NewTranslationControl), new PropertyMetadata(true));
+            DependencyProperty.Register(nameof(ShowHideButton), typeof(bool), typeof(NewTranslationControl), new PropertyMetadata(true));
 
         #endregion
 

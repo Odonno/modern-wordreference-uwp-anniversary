@@ -246,4 +246,7 @@
   <data name="HistoryToggleSwitch.OnContent" xml:space="preserve">
     <value>History visible</value>
   </data>
+  <data name="ProgressTextBox.Text" xml:space="preserve">
+    <value>We are searching the best translation.</value>
+  </data>
 </root>

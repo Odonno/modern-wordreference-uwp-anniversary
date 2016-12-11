@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignWidth="400" d:DesignHeight="270"
+    d:DesignWidth="400" d:DesignHeight="290"
     DataContext="{Binding NewTranslation, Source={StaticResource ViewModelLocator}}">
 
     <Grid x:Name="RootGrid"
@@ -17,6 +17,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="20" />
             </Grid.RowDefinitions>
 
             <Grid x:Name="NewTranslationHeaderGrid" Grid.Row="0" BorderBrush="Gray" BorderThickness="0 0 0 1"
@@ -78,6 +79,11 @@
             </StackPanel>
 
             <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
@@ -100,6 +106,16 @@
                         IsEnabled="{x:Bind ViewModel.CanExecuteSearch, Mode=OneWay}"
                         Content="&#xE724;" FontFamily="Segoe MDL2 Assets" FontSize="20" Height="34" />
             </Grid>
+            
+            <StackPanel Grid.Row="3" Margin="0 0 0 -10" 
+                        Visibility="{x:Bind ViewModel.ShowProgress, Mode=OneWay}"
+                        VerticalAlignment="Bottom">
+                <TextBlock x:Uid="/UIResources/ProgressTextBox" x:Name="ProgressTextBox" 
+                           FontSize="11"
+                           Text="We are searching the best translation." />
+
+                <ProgressBar Margin="0 2 0 0" IsIndeterminate="True" />
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>
